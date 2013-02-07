@@ -51,41 +51,19 @@ h1 {
     line-height: 35px;
 }
 
-a {
-    color: #94d181;
-}
-
-a:hover {
-    color: #373957;
-}
-
-fieldset {
-    width: 100%;
-}
-
-legend {
-    font-size: 16px;
-}
-
 input[type="button"],
 input[type="submit"] {
     padding: 2px 6px 3px;
     background: #373957;
     color: #FFF;
-    font-size: 18px;
-    border-radius: 12px;
-    cursor: pointer;
+    font-size: 14px;
+    border-radius: 8px;
 }
 
 input[type="button"]:hover,
 input[type="submit"]:hover {
     background: #FFF;
     color: #373957;
-}
-
-
-#display_playlists {
-    display: none;
 }
 
 #confirmation_error {
@@ -103,12 +81,31 @@ label.hasError {
     color: #b73b4c;
 }
 
+.playlist_control_buttons input[type="button"] {
+    margin: 10px;
+    width: 125px;
+}
+
+.display_item {
+    width: inherit;
+    border-bottom: solid 1px #000;
+    padding: 20px 10px 0;
+}
+
+.display_item p {
+    font-size: 13px;
+    line-height: 1.6em;
+}
+
+
 .genreIcon {
+    float: right;
     display: block;
     text-indent: -9999px;
     background: url(../_images/genre_icons.png) no-repeat;
     height: 45px;
     width: 45px;
+    margin: 0 0 20px 20px;
 }
 
 .genreIcon.country {
@@ -137,15 +134,18 @@ label.hasError {
 
 #browse ul li {
     background: #b6b7d9;
-    font-size: 18px;
+    font-size: 16px;
     padding: 4px 0;
     padding-left: 10px;
     width: 100%;
+    font-weight: bold;
+    line-height: 25px;
 }
 
 #browse ul li a {
     color: #FFF;
     width: inherit;
+    text-decoration: none;
 }
 
 #browse ul li:nth-child(odd) {
