@@ -1,0 +1,106 @@
+/**
+*
+font-family: 'Syncopate', sans-serif;
+font-family: 'Oleo Script Swash Caps', cursive;
+*/
+
+body {
+    background: url(../_images/bg_main.png) repeat-x #FFF;
+    font-family: 'Syncopate', sans-serif;
+}
+#wrapper {
+    width: 980px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Oleo Script Swash Caps', cursive;
+    font-size: 62px;
+    line-height: 1.2em;
+    color: #FFF;
+    margin: 0 0 25px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+p,li,label {
+    font-size: 12px;
+    line-height: 1.2em;
+    color: #373957;
+    margin: 10px 0;
+}
+
+a {
+    color: #94d181;
+}
+
+a:hover {
+    color: #373957;
+}
+
+fieldset {
+    width: 100%;
+}
+
+legend {
+    font-size: 16px;
+}
+
+input[type="button"],
+input[type="submit"] {
+    padding: 2px 6px 3px;
+    background: #373957;
+    color: #FFF;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+    background: #FFF;
+    color: #373957;
+}
+
+
+#display_playlists {
+    display: none;
+}
+
+#confirmation_error {
+    background: #b73b4c;
+    padding: 10px 20px;
+    display: none;
+}
+
+#confirmation_error p {
+    color: #FFF;
+}
+
+.asterisk,
+label.hasError {
+    color: #b73b4c;
+}
+
+.genreIcon {
+    display: block;
+    text-indent: -9999px;
+    background: url(../_images/genre_icons.png) no-repeat;
+    height: 45px;
+    width: 45px;
+}
+
+.genreIcon.country {
+    background-position: 0 0;
+}
+
+.genreIcon.rap {
+    background-position: -56px 0;
+}
+
+.genreIcon.dubstep {
+    background-position: 0px -56px;
+}
+
+.genreIcon.pop {
+    background-position: -56px -56px;
+}

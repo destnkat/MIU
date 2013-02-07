@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+@author Daniel Beacham
+@date January 8, 2013
+@title Digital Jukebox - Add an Item
+
+
+-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Digital Jukebox - Add an Item</title>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width" />
+        <link href='http://fonts.googleapis.com/css?family=Syncopate:400,700|Oleo+Script+Swash+Caps' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="_css/styles.css" />
+    </head>
+    <body>
+    <div id="wrapper">
+        <div id="add_playlist">
+        <h1>Add New Playlist</h1>
+            <fieldset>
+                <legend>So you wanna add a new playlist...</legend>
+                <div id="confirmation_error"></div>
+                <form method="post" action="#" enctype="multipart/form-data" onsubmit="return validateTheForm(this);">
+                    <ul>
+                        <li>
+                            <label for="playlist_name" id="lbl_name"><span class="asterisk">*</span>Name of Playlist:</label>
+                            <input type="text" name="playlist_name" id="playlist_name" />
+                        </li>
+                        <li>
+                            <label for="playlist_description" id="lbl_description"><span class="asterisk">*</span>Description:</label>
+                            <textarea name="playlist_description" id="playlist_description"></textarea>
+                        </li>
+                        <li>
+                            <label for="playlist_genre" id="lbl_genre"><span class="asterisk">*</span>Primary Genre:</label>
+                            <select name="playlist_genre" id="playlist_genre">
+                            </select>
+                        </li>
+                        <li>
+                            <label for="playlist_date">Date Added:</label>
+                            <input type="date" name="playlist_date" id="playlist_date" />
+                        </li>
+                        <li>
+                            <label for="playlist_priority">Priority:</label>
+                            <input type="range" name="playlist_priority" id="playlist_priority" />
+                        </li>
+                        <li>
+                            Activate Playlist:
+                            <ul>
+                                <li>
+                                    <label for="playlist_enabled">
+                                        <input type="radio" name="playlist_enabled" id="playlist_enabled" checked value="1" />
+                                        Active
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="playlist_disabled">
+                                        <input type="radio" name="playlist_enabled" id="playlist_disabled" value="0" />
+                                        Disabled
+                                    </label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p><small><span class="asterisk">*</span> denotes a required field</small></p>
+                    <input type="hidden" name="add_edit" id="add_edit" value="add" />
+                    <input type="submit" id="btn_submit" value="Add Playlist" />
+
+                    <input type="button" value="Home" id="home_button" />
+                    <input type="button" value="Clear All" id="clear_data" />
+                    <input type="button" value="Display All" id="display_data" />
+
+                </form>
+            </fieldset>
+        </div>
+        <div id="display_playlists">
+            <h1>Existing Playlists</h1>
+            <div id="existing_data"></div>
+            <input type="button" value="&lt; Back" id="add_new_playlist" />
+        </div>
+    </div>
+    <script src="_js/json.js"></script>
+    <script src="_js/main.js"></script>
+</body>
+</html>
