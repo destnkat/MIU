@@ -13,31 +13,91 @@
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <link href='http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps|Julius+Sans+One' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="_css/styles.css" />
     </head>
     <body>
-        <section id="header">
-            <h1>Digital Jukebox</h1>
-            <span>Create Musical Playlists to satisfy your every musical desire!</span>
-            <input type="button" value="Add Playlist" id="btn_addPlaylist"/>
-        </section>
-        <section id="search">
-            <label for="btn_addPlaylist">Search For Playlist:</label>
-            <input type="search" id="search_text" placeholder="Search" />
-        </section>
-        <section id="browse">
-            <h3>Browse Playlists</h3>
-            <ul>
-                <li><a href="browse.html?criteria=country">Country Playlists</a></li>
-                <li><a href="browse.html?criteria=rap">Rap Playlists</a></li>
-                <li><a href="browse.html?criteria=pop">Pop Playlists</a></li>
-                <li><a href="browse.html?criteria=dubstep">Dubstep Playlists</a></li>
-                <li><a href="browse.html?criteria=inactive">Inactive Playlists</a></li>
-                <li><a href="browse.html?criteria=high_priority">High Priority ( > 75) </a></li>
-            </ul>
-        </section>
-    <script src="_js/json.js"></script>
+        <div data-role="page" id="home" data-url="home" data-title="Home" data-theme="a" data-content-theme="a">
+            <div data-role="header">
+                <h1>Digital Jukebox</h1>
+            </div>
+            <a href="#additem" class="btn_addPlaylist" data-role="button" data-icon="plus" data-iconpos="right" data-transition="flip">Add Playlist</a>
+            <div data-role="content">
+            <input type="search" name="search" id="search-basic" placeholder="Find Playlists..."/>
+                <ul data-role="listview" id="list_browse" data-theme="c" data-divider-theme="a">
+                    <li data-role="list-divider">Browse By:</li>
+                    <li><a href="#browse" data-criteria="country">Country Playlists</a></li>
+                    <li><a href="#browse" data-criteria="rap">Rap Playlists</a></li>
+                    <li><a href="#browse" data-criteria="pop">Pop Playlists</a></li>
+                    <li><a href="#browse" data-criteria="dubstep">Dubstep Playlists</a></li>
+                    <li><a href="#browse" data-criteria="inactive">Inactive Playlists</a></li>
+                    <li><a href="#browse" data-criteria="high_priority">High Priority ( > 75) </a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="page" id="additem" data-url="additem" data-title="Add Playlist">
+            <div data-role="header">
+                <h1>Add Playlists</h1>
+            </div>
+            <div data-role="content">
+                <form method="post" action="#" enctype="multipart/form-data" onsubmit="return validateTheForm(this);">
+                    <div data-role="fieldcontain">
+                        <label for="playlist_name" id="lbl_name"><span class="asterisk">*</span>Name of Playlist:</label>
+                        <input type="text" name="playlist_name" id="playlist_name" />
+                    </div>
+                    <div data-role="fieldcontain">
+                            <label for="playlist_description" id="lbl_description"><span class="asterisk">*</span>Description:</label>
+                            <textarea name="playlist_description" id="playlist_description"></textarea>
+                    </div>
+                    <div data-role="fieldcontain">
+                            <label for="playlist_genre" id="lbl_genre"><span class="asterisk">*</span>Primary Genre:</label>
+                            <select name="playlist_genre" id="playlist_genre">
+                                <option value="null">Please Choose one:</option>
+                                <option value="country">Country</option>
+                                <option value="rap">Rap</option>
+                                <option value="pop">Pop</option>
+                                <option value="dubstep">Dubstep</option>
+                            </select>
+                    </div>
+                    <div data-role="fieldcontain">
+                            <label for="playlist_date">Date Added:</label>
+                            <input type="date" name="playlist_date" id="playlist_date" />
+                    </div>
+                    <div data-role="fieldcontain">
+                            <label for="playlist_priority">Priority:</label>
+                            <input type="range" name="playlist_priority" id="playlist_priority" />
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="playlist_enabled">Active</label>
+                        <input type="radio" name="playlist_enabled" id="playlist_enabled" checked value="1" />
+
+                        <label for="playlist_disabled">Disabled</label>
+                        <input type="radio" name="playlist_enabled" id="playlist_disabled" value="0" />
+                    </div>
+
+
+                    <p><small><span class="asterisk">*</span> denotes a required field</small></p>
+                    <a href="#" data-role="button" data-icon="plus" data-iconpos="right">Submit Playlist</a>
+                    <a href="#" data-role="button" data-icon="star" data-iconpos="right">Display All</a>
+                    <a href="#home" data-role="button" data-icon="home" data-iconpos="right" data-transition="flip">Home</a>
+                    <a href="#" data-role="button" data-icon="delete" data-iconpos="right">Delete All</a>
+                    <input type="hidden" name="add_edit" id="add_edit" value="add" />
+
+
+                </form>
+            </div>
+        </div>
+        <div data-role="page" id="browse" data-url="browse" data-title="Browse Playlists">
+            <div data-role="header">
+                <h1>Browse Playlists</h1>
+            </div>
+            <div data-role="content" id="browse_results">
+
+            </div>
+        </div>
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="_js/main.js"></script>
 </body>
 </html>

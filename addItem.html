@@ -13,13 +13,15 @@
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <link href='http://fonts.googleapis.com/css?family=Syncopate:400,700|Oleo+Script+Swash+Caps' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="_css/styles.css" />
     </head>
     <body>
-    <div id="wrapper">
-        <div id="add_playlist">
+    <section id="header">
         <h1>Add New Playlist</h1>
+    </section>
+    <section id="add_playlist">
             <fieldset>
                 <legend>So you wanna add a new playlist...</legend>
                 <div id="confirmation_error"></div>
@@ -67,16 +69,20 @@
                     <p><small><span class="asterisk">*</span> denotes a required field</small></p>
                     <input type="hidden" name="add_edit" id="add_edit" value="add" />
                     <input type="submit" id="btn_submit" value="Add Playlist" />
-
+                    <input type="button" value="Display All" id="display_data" /><br/>
                     <input type="button" value="Home" id="home_button" />
                     <input type="button" value="Clear All" id="clear_data" />
-                    <input type="button" value="Display All" id="display_data" />
+
 
                 </form>
             </fieldset>
-        </div>
-    </div>
+        </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="_js/json.js"></script>
     <script src="_js/main.js"></script>
+    <script>
+        window.onload = init('add');
+    </script>
 </body>
 </html>
