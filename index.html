@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
 @author Daniel Beacham
-@date January 8, 2013
+@date February 6, 2013
 @title Digital Jukebox
-@term 0113
+@term 0213
 
 -->
     <head>
@@ -13,24 +13,30 @@
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width" />
-        <link href='http://fonts.googleapis.com/css?family=Syncopate:400,700|Oleo+Script+Swash+Caps' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps|Julius+Sans+One' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="_css/styles.css" />
     </head>
     <body>
-        <div id="wrapper">
-            <h1>My Playlists</h1>
-            <p>This application will serve as a personal jukebox.  It is a web app that functions like Spotify or a web based
-    iTunes.  You can Add New Playlists, Modify Playlists, or Listen to them.</p>
-            <p><strong>Specific Functionality:</strong></p>
+        <section id="header">
+            <h1>Digital Jukebox</h1>
+            <span>Create Musical Playlists to satisfy your every musical desire!</span>
+            <input type="button" value="Add Playlist" id="btn_addPlaylist"/>
+        </section>
+        <section id="search">
+            <label for="btn_addPlaylist">Search For Playlist:</label>
+            <input type="search" id="search_text" placeholder="Search" />
+        </section>
+        <section id="browse">
+            <h3>Browse Playlists</h3>
             <ul>
-                <li>Range: Allows User to specify a priority for the playlist which is used during song shuffle.</li>
-                <li>Descriptions: Users can identify their playlists with unique descriptions.</li>
-                <li>Enabled: A Radio Button Group allows user to turn the playlist on/off for shuffled all playing.</li>
-                <li>Date Added: Shows the date the playlist was created.</li>
-                <li>Genre Selection: Choose the primary Genre for the Playlist.</li>
+                <li><a href="browse.html?criteria=genre">Genre</a></li>
+                <li><a href="browse.html?criteria=active">Currently Active</a></li>
+                <li><a href="browse.html?criteria=inactive">Currently Inactive</a></li>
+                <li><a href="browse.html?criteria=name">Playlist Name</a></li>
+                <li><a href="browse.html?criteria=high_priority">High Priority ( > 75)</a></li>
+                <li><a href="browse.html?criteria=low_priority">Low Priority ( < 25)</a></li>
             </ul>
-            <p><a href="addItem.html">Add Playlist</a></p>
-        </div>
+        </section>
     <script src="_js/json.js"></script>
     <script src="_js/main.js"></script>
 </body>

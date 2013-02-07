@@ -1,32 +1,54 @@
 /**
 *
-font-family: 'Syncopate', sans-serif;
+font-family: 'Julius Sans One', sans-serif;
 font-family: 'Oleo Script Swash Caps', cursive;
 */
+*{margin: 0; padding: 0;}
 
 body {
     background: url(../_images/bg_main.png) repeat-x #FFF;
-    font-family: 'Syncopate', sans-serif;
-}
-#wrapper {
-    width: 980px;
-    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
 }
 
 h1 {
     font-family: 'Oleo Script Swash Caps', cursive;
-    font-size: 62px;
-    line-height: 1.2em;
+    font-size: 38px;
     color: #FFF;
-    margin: 0 0 25px;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
 }
 
-p,li,label {
-    font-size: 12px;
-    line-height: 1.2em;
-    color: #373957;
+#header {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    padding: 0 10px;
+}
+
+#header span {
+    color: #fff;
+    font-size: 16px;
+}
+
+#header input[type="button"] {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+#search {
     margin: 10px 0;
+    padding: 0 10px;
+}
+
+#search input {
+    font-size: 14px;
+    padding-left: 5px;
+}
+
+#search label {
+    font-size: 14px;
+    line-height: 35px;
 }
 
 a {
@@ -50,8 +72,8 @@ input[type="submit"] {
     padding: 2px 6px 3px;
     background: #373957;
     color: #FFF;
-    font-size: 20px;
-    border-radius: 8px;
+    font-size: 18px;
+    border-radius: 12px;
     cursor: pointer;
 }
 
@@ -103,4 +125,36 @@ label.hasError {
 
 .genreIcon.pop {
     background-position: -56px -56px;
+}
+
+#browse h3 {
+    background: #565770;
+    font-size: 18px;
+    color: #FFF;
+    text-align: center;
+    padding: 8px 0;
+}
+
+#browse ul li {
+    background: #b6b7d9;
+    font-size: 18px;
+    padding: 4px 0;
+    padding-left: 10px;
+    width: 100%;
+}
+
+#browse ul li a {
+    color: #FFF;
+    width: inherit;
+}
+
+#browse ul li:nth-child(odd) {
+    background-color:#9b9cbd;
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9b9cbd, endColorstr=#a4a5c6);
+    background-image:-moz-linear-gradient(top, #9b9cbd 0%, #a4a5c6 66%);
+    background-image:-webkit-linear-gradient(top, #9b9cbd 0%, #a4a5c6 66%);
+    background-image:-ms-linear-gradient(top, #9b9cbd 0%, #a4a5c6 66%);
+    background-image:linear-gradient(top, #9b9cbd 0%, #a4a5c6 66%);
+    background-image:-o-linear-gradient(top, #9b9cbd 0%, #a4a5c6 66%);
+    background-image:-webkit-gradient(linear, right top, right bottom, color-stop(0%,#9b9cbd), color-stop(66%,#a4a5c6));
 }
