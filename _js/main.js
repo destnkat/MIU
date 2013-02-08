@@ -1,51 +1,46 @@
 /**
- * @todo CLEAN THIS CODE UP as I learn more about JQM. Convert all items to use jQuery and not native JS.
+ * CLEAN THIS CODE UP as I learn more about JQM. Convert all items to use jQuery and not native JS.
  * @author Daniel C. Beacham
  * @date 02.07.13
  * @description - Using JQM to convert VFW Web App into a Mobile Version.  Using Multi-Page Templating
  */
-$('#home').live('pageshow', function(event){
-    $('#list_browse').find('li').each(function(){
-       $(this).find('a').click(function(){
-           localStorage.setItem('criteria', $(this).data('criteria'));
-       });
-    });
-});
-
-$('#browse').live('pageshow', function(event){
-    if (localStorage.length < 2 ){
-        retrieveData();
-    } else {
-        displaySelectedData();
-    }
-});
-
-$('#addItem').live('pageshow', function(event){
-
-});
 
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
 }
 
-function retrieveData() {
-    var storageObj = {};
-    storageObj.playlists = [];
+/**
+ * Form Handler for the AddItem Page
+ * @param e
+ */
+function handleFormSubmit(e){
+    e.preventDefault();
+    var obj = {};
+    var randomId = getRandomPlaylistId();
+    var itemsArray = ['playlist_name', 'playlist_description', 'playlist_genre', 'playlist_date', 'playlist_priority'];
+    var error;
+    var confirmationContainer = $('#error_confirmation');
+    for(var i= 0 ; i < itemsArray.length; i++) {
+        obj[itemsArray[i]] = $('#' + itemsArray[i]).val();
+    }
+    obj.enabled = $('input:radio[name=playlist_enabled]:checked').val();
 
-    $.ajax({
-        url: '_js/json.json',
-        success: function(data) {
-            for(var i = 0; i < data.playlists.length; i++) {
-                var playlistID = getRandomPlaylistId();
-                var consolidated = JSON.stringify(data.playlists[i]);
-                localStorage.setItem(playlistID, consolidated);
-            }
+    localStorage.setItem(randomId, JSON.stringify(obj));
 
-            displaySelectedData();
-        }
-    });
+    //Clear the form
+    $(':input','#frm_addItem')
+        .not(':button, :submit, :reset, :hidden')
+        .val('')
+        .removeAttr('checked')
+        .removeAttr('selected');
+
+    confirmationContainer.html('<p>Your Item has been successfully Added to localStorage</p>')
+                         .show();
 }
 
+/**
+ * Displays the selected Data
+ */
 function displaySelectedData() {
     var criteria = localStorage.getItem('criteria');
     var output = "";
@@ -85,8 +80,22 @@ function displaySelectedData() {
     $('#browse_results').html(output);
 }
 
-function getRandomPlaylistId() {
-    return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
+function retrieveData() {
+    var storageObj = {};
+    storageObj.playlists = [];
+
+    $.ajax({
+        url: '_js/json.json',
+        success: function(data) {
+            for(var i = 0; i < data.playlists.length; i++) {
+                var playlistID = getRandomPlaylistId();
+                var consolidated = JSON.stringify(data.playlists[i]);
+                localStorage.setItem(playlistID, consolidated);
+            }
+
+            displaySelectedData();
+        }
+    });
 }
 
 function deleteLocalStorageItem(key) {
@@ -96,3 +105,32 @@ function deleteLocalStorageItem(key) {
 
     displaySelectedData();
 }
+
+function bindButtons() {
+    $('#btn_submitPlaylist').live('click', handleFormSubmit);
+    $('#btn_displayAll').live('click', function(e){
+        e.preventDefault();
+        localStorage.setItem('criteria', $(this).data('criteria'));
+    })
+}
+
+$('#home').live('pageshow', function (event) {
+    $('#list_browse').find('li').each(function () {
+        $(this).find('a').click(function () {
+            localStorage.setItem('criteria', $(this).data('criteria'));
+        });
+    });
+});
+
+$('#browse').live('pageshow', function (event) {
+    if (localStorage.length < 2 ){ //todo: Tie to Key Name
+        retrieveData();
+    } else {
+        displaySelectedData();
+    }
+});
+
+$('#additem').live('pageshow', function (event) {
+    bindButtons();
+    $('#error_confirmation').html('').hide();
+});
