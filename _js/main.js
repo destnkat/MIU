@@ -114,12 +114,32 @@ function bindButtons() {
     })
 }
 
+function runSearchFunction() {
+    var curSearchValue = $('#search-basic').val();
+    var resultsContainer = $('#search_results');
+
+    resultsContainer.append(resultsList).slideDown('fast');
+}
+
 $('#home').live('pageshow', function (event) {
     $('#list_browse').find('li').each(function () {
         $(this).find('a').click(function () {
             localStorage.setItem('criteria', $(this).data('criteria'));
         });
     });
+
+    $('#search-basic').keyup(function(evt){
+       runSearchFunction();
+    });
+
+    $('.ui-input-search').find('.ui-icon-delete').click(function(evt){
+        var results = $('#search_results');
+
+        if (results.is(':visible')) {
+            results.slideUp('fast');
+        }
+    });
+
 });
 
 $('#browse').live('pageshow', function (event) {

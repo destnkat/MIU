@@ -91,3 +91,17 @@ label.hasError {
     padding: 15px 25px;
     display: none;
 }
+
+#search_container {
+    position: relative;
+}
+
+#search_results {
+    display: none;
+    background: rgba(0,0,0, 0.2);
+    min-height: 200px;
+}
+
+.ui-icon-my-playlist {
+    background-image: url(../_images/ipod.png);
+}
