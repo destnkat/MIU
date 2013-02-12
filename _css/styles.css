@@ -9,10 +9,10 @@ font-family: 'Oleo Script Swash Caps', cursive;
     background: url(../_images/bg_main.png) repeat-x #FFF;
 }
 .ui-header .ui-title {
-    font-family: 'Oleo Script Swash Caps', cursive;
-    font-size: 30px;
+    font-family: 'Ribeye', cursive;
+    font-size: 22px;
     color: #FFF;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
     margin: 0;
 }
 
@@ -98,8 +98,35 @@ label.hasError {
 
 #search_results {
     display: none;
-    background: rgba(0,0,0, 0.2);
-    min-height: 200px;
+    background: rgba(0,0,0, 0.6);
+    position: absolute;
+    z-index: 50;
+    left: 15px;
+    width: 93%;
+}
+
+#search_results ul {
+    padding: 8px 0;
+}
+
+#search_results {
+    border-radius: 0 0 12px 12px;
+}
+#search_results ul li {
+    list-style-type: none;
+    font-size: 13px;
+    line-height: 2em;
+    border-bottom: solid 1px #fff;
+    padding: 3px 15px 3px;
+}
+
+#search_results ul li:last-child {
+    border: none;
+}
+
+#search_results ul li a {
+    color: #fff;
+    text-decoration: none;
 }
 
 .ui-icon-my-playlist {

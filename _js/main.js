@@ -41,16 +41,11 @@ function handleFormSubmit(e){
 /**
  * Displays the selected Data
  */
-function displaySelectedData() {
-    var criteria = localStorage.getItem('criteria');
+function displaySelectedData(criteria) {
+
     var output = "";
     for (var i= 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
-
-        //Disregard the Criteria LS Item
-        if(key === 'criteria') {
-            continue;
-        }
 
         var tmpItem = $.parseJSON(localStorage[key]);
 
@@ -108,26 +103,85 @@ function deleteLocalStorageItem(key) {
 
 function bindButtons() {
     $('#btn_submitPlaylist').live('click', handleFormSubmit);
-    $('#btn_displayAll').live('click', function(e){
-        e.preventDefault();
-        localStorage.setItem('criteria', $(this).data('criteria'));
-    })
+}
+
+function populateSearchDiv(results) {
+    if ($('#search_results').length == 0) {
+        $('<div>', {
+            id: 'search_results'
+        }).appendTo($('#search_container'));
+    }
+    //Clear Results Container
+    $('#search_results').html('');
+
+
+    var resultsContainer = $().add('<ul>');
+
+    $.each(results, function(key) {
+        $('<li>', {
+           html: '<a href="search.html?playlistid=' + results[key].id + '">' + results[key].playlist_name + '</a>'
+        }).appendTo(resultsContainer);
+    });
+
+    $('#search_results').append(resultsContainer);
+
+    if($('#search_results').is(':hidden')) {
+        $('#search_results').slideDown('fast');
+    }
 }
 
 function runSearchFunction() {
     var curSearchValue = $('#search-basic').val();
-    var resultsContainer = $('#search_results');
+    var resultsList = [];
 
-    resultsContainer.append(resultsList).slideDown('fast');
+    if (curSearchValue.length <= 2) {
+        if ($('#search_results').not(':hidden')) {
+            $('#search_results').slideUp('fast');
+        }
+        return;
+    }
+
+    $.each(localStorage, function(i){
+       var curKey = localStorage.key(i);
+       var item = localStorage.getItem(curKey);
+
+       var parsedItem = $.parseJSON(item);
+       var loweredName = parsedItem.playlist_name.toLowerCase();
+       var loweredDescription = parsedItem.playlist_description.toLowerCase();
+
+        parsedItem.id = curKey;
+
+       if (loweredName.indexOf(curSearchValue) !== -1 || loweredDescription.indexOf(curSearchValue) !== -1 ) {
+           resultsList.push(parsedItem);
+       }
+
+    });
+
+   populateSearchDiv(resultsList);
+}
+
+
+function populateSearchResultDetails(id) {
+    var tmpItem = $.parseJSON(localStorage.getItem(id));
+    var output = '';
+    var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
+    output += "<div class='display_item'>";
+    output += "<div class='genreIcon " + tmpItem.playlist_genre +"'>" + tmpItem.playlist_genre + " ICON</div>";
+    output += "<p><strong>Name: </strong> " + tmpItem.playlist_name +  "</p>";
+    output += "<p><strong>Description: </strong>" + tmpItem.playlist_description + "</p>";
+    output += "<p><strong>Genre: </strong>" + tmpItem.playlist_genre + "</p>";
+    output += "<p><strong>Created: </strong>" + tmpItem.playlist_date + "</p>";
+    output += "<p><strong>Priority: </strong>" + tmpItem.playlist_priority + "</p>";
+    output += "<p><strong>Status: </strong>" + enabled + "</p>";
+    output += "<input type='button' value='edit playlist' onclick='editLocalStorageItem(this.id);' id='edit_" + id + "' />";
+    output += "<input type='button' value='delete playlist' onclick='deleteLocalStorageItem(this.id);' id='delete_" + id + "' />";
+    output += '</div>';
+
+    $('#results_detail').html(output);
+
 }
 
 $('#home').live('pageshow', function (event) {
-    $('#list_browse').find('li').each(function () {
-        $(this).find('a').click(function () {
-            localStorage.setItem('criteria', $(this).data('criteria'));
-        });
-    });
-
     $('#search-basic').keyup(function(evt){
        runSearchFunction();
     });
@@ -143,14 +197,23 @@ $('#home').live('pageshow', function (event) {
 });
 
 $('#browse').live('pageshow', function (event) {
-    if (localStorage.length < 2 ){ //todo: Tie to Key Name
+    var criteria = $(this).data('url').split("?")[1];
+    var cId = criteria.replace("criteria=", "");
+
+    if (localStorage.length < 1){
         retrieveData();
     } else {
-        displaySelectedData();
+        displaySelectedData(cId);
     }
 });
 
 $('#additem').live('pageshow', function (event) {
     bindButtons();
     $('#error_confirmation').html('').hide();
+});
+
+$('#search').live('pageshow', function(event) {
+   var playlist = $(this).data('url').split("?")[1];
+   var pId = playlist.replace("playlistid=", "");
+   populateSearchResultDetails(pId);
 });

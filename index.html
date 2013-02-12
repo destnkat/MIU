@@ -16,7 +16,7 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-    <link href='http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps|Julius+Sans+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One|Ribeye' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="_css/styles.css" />
 </head>
 <body>
@@ -34,39 +34,38 @@
     <div data-role="content">
         <div data-role="fieldcontain" id="search_container">
             <input type="search" name="search" id="search-basic" placeholder="Find Playlists..."/>
-            <div id="search_results"></div>
         </div>
         <ul data-role="listview" id="list_browse" data-theme="c" data-divider-theme="a">
             <li data-role="list-divider">
                 Browse By:
             </li>
             <li>
-                <a href="#browse" data-criteria="country" data-transition="slidefade">
+                <a href="browse.html?criteria=country" data-transition="slidefade">
                     Country Playlists
                 </a>
             </li>
             <li>
-                <a href="#browse" data-criteria="rap" data-transition="slidefade">
+                <a href="browse.html?criteria=rap"data-transition="slidefade">
                     Rap Playlists
                 </a>
             </li>
             <li>
-                <a href="#browse" data-criteria="pop" data-transition="slidefade">
+                <a href="browse.html?criteria=pop" data-transition="slidefade">
                     Pop Playlists
                 </a>
             </li>
             <li>
-                <a href="#browse" data-criteria="dubstep" data-transition="slidefade">
+                <a href="browse.html?criteria=dubstep" data-transition="slidefade">
                     Dubstep Playlists
                 </a>
             </li>
             <li>
-                <a href="#browse" data-criteria="inactive" data-transition="slidefade">
+                <a href="browse.html?criteria=inactive" data-transition="slidefade">
                     Inactive Playlists
                 </a>
             </li>
             <li>
-                <a href="#browse" data-criteria="high_priority" data-transition="slidefade">
+                <a href="browse.html?criteria=high_priority" data-transition="slidefade">
                     High Priority ( >
                     75)
                 </a>
@@ -77,8 +76,8 @@
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade" class="ui-btn-active ui-state-persist">Home</a></li>
-                <li><a href="#about" data-transition="slidefade" data-icon="info">About</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
+                <li><a href="browse.html?criteria=all" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
@@ -189,46 +188,34 @@
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
-                <li><a href="#about" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">About</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#info" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">Info</a></li>
+                <li><a href="browse.html?criteria=all" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
     </div>
 </div>
-<div data-role="page" id="browse" data-url="browse" data-title="Browse Playlists">
-    <div data-role="header">
-        <h1>
-            Browse Playlists
-        </h1>
-    </div>
-    <div data-role="content" id="browse_results">
-
-    </div>
-    <div data-role="footer" data-position="fixed" data-id="bottom-nav">
-        <div data-role="navbar" data-iconpos="top">
-            <ul>
-                <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
-                <li><a href="#about" data-transition="slidefade" data-icon="info">About</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star" class="ui-btn-active ui-state-persist">Playlists</a></li>
-                <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div data-role="page" id="about" data-url="about" data-title="About This Application">
+<div data-role="page" id="info" data-url="about" data-title="About This Application">
     <div data-role="header">
         <h1>About This Application</h1>
     </div>
     <div data-role="content">
+        <p>
+            Digital Jukebox is an application that allows you to create and save playlists for you to listen to later.
+            It allows you to select from different genres, set priorities and activate/deactivate playlists for your enjoyment.
+        </p>
+        <p>
+            This is an open source application, hosted on GITHUB.
+            <a href="https://github.com/destnkat/MIU/tree/gh-pages">Click Here to access the file.</a>
+        </p>
 
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
-                <li><a href="#about" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">About</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#info" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">Info</a></li>
+                <li><a href="browse.html?criteria=all" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
