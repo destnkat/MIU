@@ -5,6 +5,14 @@
  * @description - Using JQM to convert VFW Web App into a Mobile Version.  Using Multi-Page Templating
  */
 
+$(function(){
+    if(localStorage.length < 1) {
+        retrieveData();
+    }
+
+    bindButtons();
+})
+
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
 }
@@ -15,11 +23,11 @@ function getRandomPlaylistId() {
  */
 function handleFormSubmit(e){
     e.preventDefault();
+
     var obj = {};
-    var randomId = getRandomPlaylistId();
+    var randomId = $('#add_edit').val() === 'edit' ? $('#add_edit').data('key') : getRandomPlaylistId();
     var itemsArray = ['playlist_name', 'playlist_description', 'playlist_genre', 'playlist_date', 'playlist_priority'];
-    var error;
-    var confirmationContainer = $('#error_confirmation');
+
     for(var i= 0 ; i < itemsArray.length; i++) {
         obj[itemsArray[i]] = $('#' + itemsArray[i]).val();
     }
@@ -27,15 +35,21 @@ function handleFormSubmit(e){
 
     localStorage.setItem(randomId, JSON.stringify(obj));
 
-    //Clear the form
-    $(':input','#frm_addItem')
-        .not(':button, :submit, :reset, :hidden')
-        .val('')
-        .removeAttr('checked')
-        .removeAttr('selected');
-
-    confirmationContainer.html('<p>Your Item has been successfully Added to localStorage</p>')
-                         .show();
+    $('<div>').simpledialog2({
+        mode: 'button',
+        width: 280,
+        headerText: 'Save Successful',
+        headerClose: false,
+        buttonPrompt: 'Your Item has been saved.',
+        buttons: {
+            'OK' : {
+                click: function(){
+                    $('#buttonoutput').text('OK');
+                },
+                theme: "a"
+            }
+        }
+    });
 }
 
 /**
@@ -44,6 +58,7 @@ function handleFormSubmit(e){
 function displaySelectedData(criteria) {
 
     var output = "";
+    var count = 0;
     for (var i= 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
 
@@ -66,10 +81,16 @@ function displaySelectedData(criteria) {
             output += "<p><strong>Created: </strong>" + tmpItem.playlist_date + "</p>";
             output += "<p><strong>Priority: </strong>" + tmpItem.playlist_priority + "</p>";
             output += "<p><strong>Status: </strong>" + enabled + "</p>";
-            output += "<input type='button' value='edit playlist' onclick='editLocalStorageItem(this.id);' id='edit_" + key + "' />";
-            output += "<input type='button' value='delete playlist' onclick='deleteLocalStorageItem(this.id);' id='delete_" + key + "' />";
+            output += "<a href='additem.html?edit="  + key + "' data-role='button' data-transition='slidefade'>Edit Playlist</a>";
+            output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + key + "'/>";
             output += '</div>';
+
+            count++;
         }
+    }
+
+    if(count === 0) {
+        output = "<p>There are currently no items in that category</p>";
     }
 
     $('#browse_results').html(output);
@@ -87,22 +108,38 @@ function retrieveData() {
                 var consolidated = JSON.stringify(data.playlists[i]);
                 localStorage.setItem(playlistID, consolidated);
             }
-
-            displaySelectedData();
         }
     });
 }
 
-function deleteLocalStorageItem(key) {
-    var delim = key.indexOf('_');
-    var cleanId = key.substring(delim + 1, key.length);
-    localStorage.removeItem(cleanId);
-
-    displaySelectedData();
+function deleteAllData(e) {
+    localStorage.clear();
+    $('<div>').simpledialog2({
+        mode: 'button',
+        width: 280,
+        headerText: 'Clear Confirmation',
+        headerClose: false,
+        buttonPrompt: 'Local Storage has been successfully deleted.',
+        buttons: {
+            'OK' : {
+                click: function(){
+                    $('#buttonoutput').text('OK');
+                },
+                theme: "a"
+            }
+        }
+    });
 }
-
 function bindButtons() {
     $('#btn_submitPlaylist').live('click', handleFormSubmit);
+    $('#btn_deleteAll').live('click', deleteAllData);
+    $('.btn_delete').live('click', function(e){
+        var key = $(this).data('key');
+        localStorage.removeItem(key);
+
+        var parent = $(this).closest('.display_item');
+        parent.remove();
+    });
 }
 
 function populateSearchDiv(results) {
@@ -173,12 +210,35 @@ function populateSearchResultDetails(id) {
     output += "<p><strong>Created: </strong>" + tmpItem.playlist_date + "</p>";
     output += "<p><strong>Priority: </strong>" + tmpItem.playlist_priority + "</p>";
     output += "<p><strong>Status: </strong>" + enabled + "</p>";
-    output += "<input type='button' value='edit playlist' onclick='editLocalStorageItem(this.id);' id='edit_" + id + "' />";
-    output += "<input type='button' value='delete playlist' onclick='deleteLocalStorageItem(this.id);' id='delete_" + id + "' />";
+    output += "<a href='additem.html?edit='"  + id + "' data-role='button' data-transition='slidefade'>Edit Playlist</a>";
+    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + key + "'/>";
     output += '</div>';
 
     $('#results_detail').html(output);
 
+}
+
+function prepopulateEditForm(id) {
+    var item = $.parseJSON(localStorage.getItem(id));
+    $('#playlist_name').val(item.playlist_name);
+    $('#playlist_description').val(item.playlist_description);
+    $('#playlist_date').val(item.playlist_date);
+    $('#playlist_priority').val(item.playlist_priority);
+
+    var radios = $('input:radio[name=playlist_enabled]');
+
+    radios.filter('[value=' + item.enabled + ']')
+        .attr('checked', true)
+        .end()
+        .checkboxradio("refresh");
+
+    $('#playlist_genre').find('option')
+        .filter('[value=' + item.playlist_genre + ']')
+        .attr('selected',true);
+    $('#playlist_genre').selectmenu("refresh", true);
+
+    $('#btn_submitPlaylist').attr('value', 'Edit Playlist').button("refresh");
+    $('#add_edit').val('edit').data('key', id);
 }
 
 $('#home').live('pageshow', function (event) {
@@ -199,16 +259,18 @@ $('#home').live('pageshow', function (event) {
 $('#browse').live('pageshow', function (event) {
     var criteria = $(this).data('url').split("?")[1];
     var cId = criteria.replace("criteria=", "");
-
-    if (localStorage.length < 1){
-        retrieveData();
-    } else {
-        displaySelectedData(cId);
-    }
+    displaySelectedData(cId);
+    $(this).page("destroy").page();
 });
 
 $('#additem').live('pageshow', function (event) {
-    bindButtons();
+
+    if ($(this).data('url').indexOf('?') !== -1) {
+        var edit = $(this).data('url').split("?")[1];
+        var editId = edit.replace("edit=", "");
+        prepopulateEditForm(editId);
+    }
+
     $('#error_confirmation').html('').hide();
 });
 
@@ -216,4 +278,5 @@ $('#search').live('pageshow', function(event) {
    var playlist = $(this).data('url').split("?")[1];
    var pId = playlist.replace("playlistid=", "");
    populateSearchResultDetails(pId);
+   $(this).page("destroy").page();
 });
