@@ -5,6 +5,9 @@ font-family: 'Oleo Script Swash Caps', cursive;
 */
 *{margin: 0; padding: 0;}
 
+p {
+    color: #43476f;
+}
 .ui-header {
     background: url(../_images/bg_main.png) repeat-x #FFF;
 }
@@ -36,33 +39,29 @@ label.hasError {
     display: block;
     text-indent: -9999px;
     background: url(../_images/genre_icons.png) no-repeat;
-    height: 45px;
-    width: 45px;
+    height: 80px;
+    width: 80px;
     margin: 0 0 20px 20px;
 }
 
 .genreIcon.country {
-    background-position: 0 0;
+    background-position: -81px -81px;
 }
 
 .genreIcon.rap {
-    background-position: -56px 0;
+    background-position: 0px -81px;
 }
 
 .genreIcon.dubstep {
-    background-position: 0px -56px;
+    background-position: -81px 0px;
 }
 
 .genreIcon.pop {
-    background-position: -56px -56px;
+    background-position: 0px 0px;
 }
-
-.display_item {
-    border-bottom: solid 1px #000;
-    padding-bottom: 15px;
-    margin-top: 15px;
+.display_item .ui-btn-up-c {
+    font-weight: normal;
 }
-
 #list_browse {
     margin-top: 20px;
 }
@@ -77,7 +76,7 @@ label.hasError {
 #feature_background .ui-btn {
     width: 135px;
     position: absolute;
-    top: 75px;
+    top: 95px;
     left: 175px;
 }
 

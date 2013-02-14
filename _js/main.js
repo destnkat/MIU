@@ -57,8 +57,8 @@ function handleFormSubmit(e){
  */
 function displaySelectedData(criteria) {
 
-    var output = "";
-    var count = 0;
+    var arr = [];
+
     for (var i= 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
 
@@ -72,28 +72,48 @@ function displaySelectedData(criteria) {
             (criteria === 'high_priority' && tmpItem.playlist_priority > 75) ||
             (criteria === 'all')
             ) {
-            var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
-            output += "<div class='display_item'>";
-            output += "<div class='genreIcon " + tmpItem.playlist_genre +"'>" + tmpItem.playlist_genre + " ICON</div>";
-            output += "<p><strong>Name: </strong> " + tmpItem.playlist_name +  "</p>";
-            output += "<p><strong>Description: </strong>" + tmpItem.playlist_description + "</p>";
-            output += "<p><strong>Genre: </strong>" + tmpItem.playlist_genre + "</p>";
-            output += "<p><strong>Created: </strong>" + tmpItem.playlist_date + "</p>";
-            output += "<p><strong>Priority: </strong>" + tmpItem.playlist_priority + "</p>";
-            output += "<p><strong>Status: </strong>" + enabled + "</p>";
-            output += "<a href='additem.html?edit="  + key + "' data-role='button' data-transition='slidefade'>Edit Playlist</a>";
-            output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + key + "'/>";
-            output += '</div>';
-
-            count++;
+                tmpItem.key = key;
+                arr.push(tmpItem);
         }
     }
 
-    if(count === 0) {
-        output = "<p>There are currently no items in that category</p>";
+    arr.sort(sortArray);
+    displayData(arr);
+}
+
+function displayData(arr) {
+    var output = "<div data-role='collapsible-set'>";
+    var count = 0;
+
+    for(var i = 0; i < arr.length; i++) {
+        var tmpItem = arr[i];
+        var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
+         output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='a'>";
+         output += "<h3><img src='_images/thumb_" + tmpItem.playlist_genre + ".png' width='30' alt=''/></strong> " + tmpItem.playlist_name +  "</h3>";
+         output += "<ul data-role='listview'><li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
+         output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";
+         output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
+         output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
+         output += "<li><strong>Status:</strong> " + enabled + "</li>";
+         output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + tmpItem.key + "'/>";
+         output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + tmpItem.key + "'/></li></ul>";
+         output += '</div>';
+
+         count++;
+    }
+    output += "</div>";
+    if (count === 0 ) {
+        output = "<p>Currently No Items in this category</p>"
     }
 
     $('#browse_results').html(output);
+}
+
+function sortArray(a, b) {
+    var aPriority = parseInt(a.playlist_priority, 10);
+    var bPriority = parseInt(b.playlist_priority, 10);
+
+    return (aPriority > bPriority) ? -1 : (aPriority < bPriority) ? 1 : 0;
 }
 
 function retrieveData() {
@@ -139,6 +159,8 @@ function bindButtons() {
 
         var parent = $(this).closest('.display_item');
         parent.remove();
+
+        $('#content').find('ul').listview('refresh');
     });
 }
 
@@ -200,19 +222,18 @@ function runSearchFunction() {
 
 function populateSearchResultDetails(id) {
     var tmpItem = $.parseJSON(localStorage.getItem(id));
-    var output = '';
+    var output = "<div data-role='collapsible-set'>";
     var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
-    output += "<div class='display_item'>";
-    output += "<div class='genreIcon " + tmpItem.playlist_genre +"'>" + tmpItem.playlist_genre + " ICON</div>";
-    output += "<p><strong>Name: </strong> " + tmpItem.playlist_name +  "</p>";
-    output += "<p><strong>Description: </strong>" + tmpItem.playlist_description + "</p>";
-    output += "<p><strong>Genre: </strong>" + tmpItem.playlist_genre + "</p>";
-    output += "<p><strong>Created: </strong>" + tmpItem.playlist_date + "</p>";
-    output += "<p><strong>Priority: </strong>" + tmpItem.playlist_priority + "</p>";
-    output += "<p><strong>Status: </strong>" + enabled + "</p>";
-    output += "<a href='additem.html?edit='"  + id + "' data-role='button' data-transition='slidefade'>Edit Playlist</a>";
-    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + key + "'/>";
-    output += '</div>';
+    output += "<div class='display_item' data-role='collapsible' data-collapsed='false' data-iconpos='right' data-theme='a'>";
+    output += "<h3><img src='_images/thumb_" + tmpItem.playlist_genre + ".png' width='30' alt=''/></strong> " + tmpItem.playlist_name +  "</h3>";
+    output += "<ul data-role='listview'><li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
+    output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";
+    output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
+    output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
+    output += "<li><strong>Status:</strong> " + enabled + "</li>";
+    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + tmpItem.key + "'/>";
+    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + tmpItem.key + "'/></li></ul>";
+    output += '</div></div>';
 
     $('#results_detail').html(output);
 
