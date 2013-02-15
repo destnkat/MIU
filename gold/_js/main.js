@@ -153,6 +153,11 @@ function deleteAllData(e) {
 function bindButtons() {
     $('#btn_submitPlaylist').live('click', handleFormSubmit);
     $('#btn_deleteAll').live('click', deleteAllData);
+    $('.btn_edit').live('click', function(e){
+        var key = $(this).data('key');
+        $.mobile.changePage('additem.html?edit=' + key);
+    });
+
     $('.btn_delete').live('click', function(e){
         var key = $(this).data('key');
         localStorage.removeItem(key);
@@ -222,18 +227,18 @@ function runSearchFunction() {
 
 function populateSearchResultDetails(id) {
     var tmpItem = $.parseJSON(localStorage.getItem(id));
-    var output = "<div data-role='collapsible-set'>";
+    var output = "<ul data-role='listview'><li>";
     var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
-    output += "<div class='display_item' data-role='collapsible' data-collapsed='false' data-iconpos='right' data-theme='a'>";
+    //output += "<div class='display_item' data-role='collapsible' data-collapsed='false' data-iconpos='right' data-theme='a'>";
     output += "<h3><img src='_images/thumb_" + tmpItem.playlist_genre + ".png' width='30' alt=''/></strong> " + tmpItem.playlist_name +  "</h3>";
     output += "<ul data-role='listview'><li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
     output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";
     output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
     output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
     output += "<li><strong>Status:</strong> " + enabled + "</li>";
-    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + tmpItem.key + "'/>";
-    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + tmpItem.key + "'/></li></ul>";
-    output += '</div></div>';
+    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + id + "'/>";
+    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + id + "'/></li></ul>";
+    output += '</li>';
 
     $('#results_detail').html(output);
 
