@@ -5,15 +5,13 @@
  * @description - Using JQM to convert VFW Web App into a Mobile Version.  Using Multi-Page Templating
  */
 
-$(function(){
-    if(localStorage.length < 1) {
-        deleteAllData();
+$('#home').on('pageinit', function(){
+    if (localStorage.length < 1) {
+        retrieveData();
     }
-
-    retrieveData();
-
     bindButtons();
-})
+});
+
 
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;

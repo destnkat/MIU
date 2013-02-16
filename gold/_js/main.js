@@ -5,15 +5,14 @@
  * @description - Using JQM to convert VFW Web App into a Mobile Version.  Using Multi-Page Templating
  */
 
-$(function(){
-    if(localStorage.length < 1) {
-       deleteAllData();
+
+$('#home').on('pageinit', function(){
+    if (localStorage.length < 1) {
+        retrieveData();
     }
-
-    retrieveData();
-
     bindButtons();
-})
+});
+
 
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
@@ -122,7 +121,15 @@ function retrieveData() {
     var storageObj = {};
     storageObj.playlists = [];
 
-    $.ajax({
+    for(var i = 0; i < json.playlists.length; i++) {
+        var playlistID = getRandomPlaylistId();
+        var consolidated = JSON.stringify(json.playlists[i]);
+        localStorage.setItem(playlistID, consolidated);
+    }
+    /**
+     * THis was the root of my problem.  Trying to AJAX this
+     *
+      $.ajax({
         url: '_js/json.json',
         success: function(data) {
             for(var i = 0; i < data.playlists.length; i++) {
@@ -131,7 +138,7 @@ function retrieveData() {
                 localStorage.setItem(playlistID, consolidated);
             }
         }
-    });
+    });*/
 }
 
 function deleteAllData(e) {
