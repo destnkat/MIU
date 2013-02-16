@@ -7,8 +7,10 @@
 
 $(function(){
     if(localStorage.length < 1) {
-        retrieveData();
+        deleteAllData();
     }
+
+    retrieveData();
 
     bindButtons();
 })
