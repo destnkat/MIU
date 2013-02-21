@@ -1,6 +1,7 @@
 $('#home').on('pageinit', function(){
     retrieveData();
     bindBrowseButtons();
+    checkAndRemoveEdit();
     $('#search-basic').keyup(function(evt){
         runSearchFunction();
     });
@@ -20,8 +21,11 @@ $('#additem').on('pageinit', function(){
 		resetForm();
 	});
 	
-	populateDate();
-	
+	if (localStorage.getItem('edit') != null) {
+		autofillData();
+	} else {
+		populateDate();
+	}
     var myForm = $('#frm_addItem');
     var errorLink = $('#error_trigger');
     
@@ -29,7 +33,7 @@ $('#additem').on('pageinit', function(){
     myForm.validate({
     	ignore: ".ignore",
         invalidHandler: function(form, validator) { console.log(validator.submitted);
-        	errorLink.click();
+        	/*errorLink.click();
         	var output ='';
         	for (var key in validator.submitted) {
 	        	var label = $('label[for^="' + key + '"]');
@@ -38,7 +42,7 @@ $('#additem').on('pageinit', function(){
 	        	output += '<li>' + cleanedLabel + '</li>';
         	}
         	
-        	$('#form_error').find('ul').html(output);
+        	$('#form_error').find('ul').html(output);*/
         },
         submitHandler: function() {
             var data = myForm.serializeArray();
@@ -51,14 +55,38 @@ $('#additem').on('pageinit', function(){
 });
 
 $('#browse').on('pageshow', function(){
+	checkAndRemoveEdit();
     displaySelectedData();
+    bindControlButtons();
     $(this).page("destroy").page();
 });
 
 //The functions below can go inside or outside the pageinit function for the page in which it is needed.
 
 var autofillData = function (){
+	var editId = localStorage.getItem('edit');
+	var items = $.parseJSON(localStorage.getItem('playlists'));
+	
+	for (var i=0; i < items.length; i++) {
+		if (items[i].playlist_id == editId) {
+			$('#playlist_name').val(items[i].playlist_name);
+			$('#playlist_description').val(items[i].playlist_description);
+			$('#playlist_date').val(items[i].playlist_date);
+			$('#playlist_priority').val(items[i].playlist_priority).slider('refresh');
+			setSelectValue('playlist_genre', items[i].playlist_genre);
+			$('#playlist_enabled').val(items[i].playlist_enabled).slider('refresh');
+			
+			break;		
+		}
+	}
+};
 
+var setSelectValue = function(whichSelect, value) {
+
+	var curSelection = $('#' + whichSelect).find('option[value="' + value + '"]');
+	curSelection.attr('selected', true);
+	$('#' + whichSelect).selectmenu('refresh');
+		
 };
 
 var getData = function(){
@@ -84,17 +112,57 @@ var storeData = function(data){
 
 };
 
+var bindControlButtons = function() {
+
+	$('.btn_edit').on('click', function(e) {
+		localStorage.setItem('edit', $(this).data('key'));
+		$.mobile.changePage('#additem');
+	});
+	
+	$('.btn_delete').on('click', function(e) {
+	    deleteItem($(this).data('key'));
+	});
+};
+
 var appendCurrentInventory = function(newObject) {
+	
 	var currentInventory = $.parseJSON(localStorage.getItem('playlists'));
 	
-	currentInventory.push(newObject);
+	if (localStorage.getItem('edit') != null) {
+		for (var i = 0; i < currentInventory.length; i++) {
+			if (currentInventory[i].playlist_id == newObject.playlist_id) {
+			
+				currentInventory[i].playlist_name        = newObject.playlist_name;
+				currentInventory[i].playlist_description = newObject.playlist_description;
+				currentInventory[i].playlist_date = newObject.playlist_date;
+				currentInventory[i].playlist_priority = newObject.playlist_priority;
+				currentInventory[i].playlist_genre = newObject.playlist_genre;
+				currentInventory[i].playlist_enabled = newObject.playlist_enabled;
+				checkAndRemoveEdit();
+				break;
+			}
+		}
+	} else {
+		currentInventory.push(newObject);
+	}
+	
 	localStorage.setItem('playlists', JSON.stringify(currentInventory));
 	$('#success_trigger').click();
 	resetForm();
 };
 
-var	deleteItem = function (){
-
+var	deleteItem = function (key){
+	var currentInventory = $.parseJSON(localStorage.getItem('playlists'));
+	
+	for (var i = 0; i < currentInventory.length; i++) {
+		if (currentInventory[i].playlist_id == key) {
+			currentInventory.splice(i, 1);
+			break;
+		}
+	}
+		
+	localStorage.setItem('playlists', JSON.stringify(currentInventory));
+	$('#success_trigger').click();
 };
 
 var clearLocal = function(){
@@ -110,7 +178,6 @@ var resetForm = function() {
 }
 
 var populateDate = function() {
-	if (localStorage.getItem('addEdit') !== 'edit') {
 		var now = new Date();
 		var month = now.getMonth() + 1;
 		var day = now.getDate();
@@ -126,7 +193,6 @@ var populateDate = function() {
 		var today = now.getFullYear() + '-' + month + '-' + day;
 		
 		$('#playlist_date').val(today);
-	}
 }
 
 var bindBrowseButtons = function() {
@@ -145,7 +211,7 @@ var retrieveData = function(){
     }
 
     for(var i = 0; i < json.playlists.length; i++) {
-        json.playlists[i].id = getRandomPlaylistId();
+        json.playlists[i].playlist_id = getRandomPlaylistId();
     }
 
     localStorage.setItem('playlists', JSON.stringify(json.playlists));
@@ -188,7 +254,7 @@ var displayData = function(arr) {
     var output = "<div data-role='collapsible-set'>";
     var count = 0;
 
-    for(var i = 0; i < arr.length; i++) {
+    for(var i = 0; i < arr.length; i++) { 
         var tmpItem = arr[i];
         var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
         output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='a'>";
@@ -198,8 +264,8 @@ var displayData = function(arr) {
         output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
         output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
         output += "<li><strong>Status:</strong> " + enabled + "</li>";
-        output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + tmpItem.key + "'/>";
-        output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + tmpItem.key + "'/></li></ul>";
+        output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-mini='true' data-key='" + tmpItem.playlist_id + "' />";
+        output += "<input type='button' value='Delete Playlist' class='btn_delete' data-mini='true' data-key='" + tmpItem.playlist_id + "'/></li></ul>";
         output += '</div>';
 
         count++;
@@ -210,4 +276,10 @@ var displayData = function(arr) {
     }
 
     $('#browse_results').html(output);
+};
+
+var checkAndRemoveEdit = function() {
+	if (localStorage.getItem('edit') != null) {
+		localStorage.removeItem('edit');
+	}	
 };
