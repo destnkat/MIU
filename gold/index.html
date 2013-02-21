@@ -28,7 +28,7 @@
         </h1>
     </div>
     <div id="feature_background">
-        <a href="additem.html" class="btn_addPlaylist" data-role="button" data-icon="plus" data-iconpos="right" data-transition="slidefade">
+        <a href="#additem" class="btn_addPlaylist" data-role="button" data-icon="plus" data-iconpos="right" data-transition="slidefade">
             Add Playlist
         </a>
     </div>
@@ -41,29 +41,29 @@
                 Browse By:
             </li>
             <li>
-                <a href="browse.html?criteria=country" data-transition="slidefade">
+                <a href="#browse" data-criteria="country" data-transition="slidefade">
                     <img src="_images/thumb_country.png" alt="country Icon"/>
                     <h3>Country Playlists</h3>
                     <p>Twang and a love of all things southern.</p>
                 </a>
             </li>
             <li>
-                <a href="browse.html?criteria=rap"data-transition="slidefade">
+                <a href="#browse" data-criteria="rap" data-transition="slidefade">
                     <img src="_images/thumb_rap.png" alt="country Icon"/>
                     <h3>Rap Playlists</h3>
                     <p>Hitting the Streets Hard with these Rhymes.</p>
                 </a>
             </li>
             <li>
-                <a href="browse.html?criteria=pop" data-transition="slidefade">
-                    <img src="_images/thumb_pop.png" alt="country Icon"/>
+                <a href="#browse" data-criteria="pop" data-transition="slidefade">
+                    <img src="_images/thumb_pop.png" alt="Pop Icon"/>
                     <h3>Pop Playlists</h3>
                     <p>For all the bubble ones out there.</p>
                 </a>
             </li>
             <li>
-                <a href="browse.html?criteria=dubstep" data-transition="slidefade">
-                    <img src="_images/thumb_dubstep.png" alt="country Icon"/>
+                <a href="#browse" data-criteria="dubstep" data-transition="slidefade">
+                    <img src="_images/thumb_dubstep.png" alt="Dubstep Icon"/>
                     <h3>Dubstep Playlists</h3>
                     <p>Electronica and Club Meet your Ears!</p>
                 </a>
@@ -75,8 +75,8 @@
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade" class="ui-btn-active ui-state-persist">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
-                <li><a href="browse.html?criteria=all" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
-                <li><a href="additem.html" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
+                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
     </div>
@@ -91,8 +91,8 @@
             It allows you to select from different genres, set priorities and activate/deactivate playlists for your enjoyment.
         </p>
         <p>This is an open source application, hosted on GITHUB.</p>
-        <p><a href="https://github.com/destnkat/MIU/tree/gh-pages/gold">Access Gold App</a></p>
-        <p><a href="https://github.com/destnkat/MIU/tree/gh-pages/bronze">Access Bronze App</a></p>
+        <p><a href="https://github.com/destnkat/MIU/tree/gh-pages/gold" data-ajax="false">Access Gold App</a></p>
+        <p><a href="https://github.com/destnkat/MIU/tree/gh-pages/bronze" data-ajax="false">Access Bronze App</a></p>
 
         <p>All Images are Open and Free to use, either obtained from <a href="http://www.openclipart.com">openclipart.com</a>
             or <a href="http://www.sxc.hu/index.phtml">stock xchg</a> </p>
@@ -103,8 +103,138 @@
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">Info</a></li>
-                <li><a href="browse.html?criteria=all" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
-                <li><a href="additem.html" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
+                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div data-role="page" id="additem" data-title="Add Playlist">
+    <div data-role="header">
+        <h1>
+            Add Playlists
+        </h1>
+    </div>
+    <div data-role="content">
+        <div id="error_confirmation">
+        </div>
+        <form id="frm_addItem" action="">
+            <div data-role="fieldcontain">
+                <label for="playlist_name" id="lbl_name">
+            <span class="asterisk">
+              *
+            </span>
+                    Name of Playlist:
+                </label>
+                <input type="text" name="playlist_name" id="playlist_name" class="required" />
+            </div>
+            <div data-role="fieldcontain">
+                <label for="playlist_description" id="lbl_description">
+            <span class="asterisk">
+              *
+            </span>
+                    Description:
+                </label>
+                <textarea name="playlist_description" id="playlist_description" class="required">
+                </textarea>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="playlist_genre" id="lbl_genre">
+            <span class="asterisk">
+              *
+            </span>
+                    Primary Genre:
+                </label>
+                <select name="playlist_genre" id="playlist_genre" class="required">
+                    <option value="">
+                        Please Choose one:
+                    </option>
+                    <option value="country">
+                        Country
+                    </option>
+                    <option value="rap">
+                        Rap
+                    </option>
+                    <option value="pop">
+                        Pop
+                    </option>
+                    <option value="dubstep">
+                        Dubstep
+                    </option>
+                </select>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="playlist_date">
+                    Date Added:
+                </label>
+                <input type="date" name="playlist_date" id="playlist_date" />
+            </div>
+            <div data-role="fieldcontain">
+                <label for="playlist_priority">
+                    Priority:
+                </label>
+                <input type="range" name="playlist_priority" id="playlist_priority" value="50" min="0" max="100"/>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="playlist_enabled">
+                    Active
+                </label>
+                <input type="radio" name="playlist_enabled" id="playlist_enabled" checked value="1" class="required" />
+
+                <label for="playlist_disabled">
+                    Disabled
+                </label>
+                <input type="radio" name="playlist_enabled" id="playlist_disabled" value="0" />
+            </div>
+
+
+            <p>
+                <small>
+            <span class="asterisk">
+              *
+            </span>
+                    denotes a required field
+                </small>
+            </p>
+            <input type="submit" value="Submit Playlist" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist">
+
+            <a id="btn_displayAll" href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">
+                Display All
+            </a>
+            <a href="#home" data-role="button" data-icon="home" data-iconpos="right" data-transition="fade">
+                Home
+            </a>
+            <input type="button" value="Delete All" data-icon="delete" data-iconpos="right" id="btn_deleteAll" />
+            <input type="hidden" name="add_edit" id="add_edit" value="add" />
+        </form>
+    </div>
+    <div data-role="footer" data-position="fixed" data-id="bottom-nav">
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
+                <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
+                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#additem" data-transition="slidefade" data-icon="plus" class="ui-btn-active ui-state-persist">Add Playlist</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div data-role="page" id="browse" data-title="Browse Playlists">
+    <div data-role="header">
+        <h1>
+            Browse Playlists
+        </h1>
+    </div>
+    <div data-role="content" id="browse_results">
+
+    </div>
+    <div data-role="footer" data-position="fixed" data-id="bottom-nav">
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
+                <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
+                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star" class="ui-btn-active ui-state-persist">Playlists</a></li>
+                <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
     </div>
@@ -113,6 +243,8 @@
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" src="http://dev.jtsage.com/cdn/simpledialog/latest/jquery.mobile.simpledialog2.min.js"></script>
-<script src="_js/main.js"></script>
+<script src="_lib/jquery.validate.min.js"></script>
+<script src="_js/json.js"></script>
+<script src="_lib/sample-main.js"></script>
 </body>
 </html>
