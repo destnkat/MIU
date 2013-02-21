@@ -132,3 +132,26 @@ label.hasError {
 .ui-icon-my-playlist {
     background-image: url(../_images/ipod.png);
 }
+
+#dialog ul {
+	margin-left: 25px;
+}
+
+#dialog ul > li {
+	color: red;
+}
+
+#reset_form_dummy,
+#success_trigger,
+#error_trigger {
+	display: none;
+}
+
+label.error {
+	display: block;
+	font-size: 11px;
+	color: red;
+}
+div.ui-slider-switch {
+	width: 100%;
+}

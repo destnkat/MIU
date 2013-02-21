@@ -163,28 +163,26 @@
                     </option>
                 </select>
             </div>
+            
             <div data-role="fieldcontain">
                 <label for="playlist_date">
                     Date Added:
                 </label>
                 <input type="date" name="playlist_date" id="playlist_date" />
             </div>
+            
             <div data-role="fieldcontain">
-                <label for="playlist_priority">
-                    Priority:
-                </label>
-                <input type="range" name="playlist_priority" id="playlist_priority" value="50" min="0" max="100"/>
+                <label for="playlist_priority">Priority:</label>
+                <input type="range" name="playlist_priority" id="playlist_priority" value="50" min="1" max="100" class="ignore" />
+               
             </div>
+            
             <div data-role="fieldcontain">
-                <label for="playlist_enabled">
-                    Active
-                </label>
-                <input type="radio" name="playlist_enabled" id="playlist_enabled" checked value="1" class="required" />
-
-                <label for="playlist_disabled">
-                    Disabled
-                </label>
-                <input type="radio" name="playlist_enabled" id="playlist_disabled" value="0" />
+                <label for="playlist_enabled">Activate Playlist</label>
+                <select data-role="slider" name="playlist_enabled" id="playlist_enabled">
+                	<option value="0">Disabled</option>
+                	<option value="1">Enabled</option>
+                </select>
             </div>
 
 
@@ -196,16 +194,12 @@
                     denotes a required field
                 </small>
             </p>
-            <input type="submit" value="Submit Playlist" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist">
-
-            <a id="btn_displayAll" href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">
-                Display All
-            </a>
-            <a href="#home" data-role="button" data-icon="home" data-iconpos="right" data-transition="fade">
-                Home
-            </a>
-            <input type="button" value="Delete All" data-icon="delete" data-iconpos="right" id="btn_deleteAll" />
-            <input type="hidden" name="add_edit" id="add_edit" value="add" />
+            <div data-role="fieldcontain">
+            	<input type="submit" value="Submit Playlist" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist">
+            	<input type="button" value="Reset Playlist" data-icon="refresh" data-iconpos="right" data-mini="true" id="reset_form"/>
+            </div>
+            <a href="#form_error" id="error_trigger" data-rel="dialog" data-transition="pop">Open Errors</a>
+            <a href="#add_success" id="success_trigger" data-rel="dialog" data-transition="pop">Success Modal</a>
         </form>
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
@@ -221,12 +215,14 @@
 </div>
 <div data-role="page" id="browse" data-title="Browse Playlists">
     <div data-role="header">
-        <h1>
-            Browse Playlists
-        </h1>
+        <h1>Browse Playlists</h1>
     </div>
-    <div data-role="content" id="browse_results">
-
+    <div data-role="content">
+    	<div data-role="fieldcontain">
+			<a id="btn_displayAll" href="#browse" data-criteria="all" data-mini="true" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">Display All</a>
+			<input type="button" value="Delete All" data-icon="delete" data-mini="true" data-iconpos="right" id="btn_deleteAll" />
+    	</div>
+        <div id="browse_results"></div>
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
         <div data-role="navbar" data-iconpos="top">
@@ -239,7 +235,23 @@
         </div>
     </div>
 </div>
-
+<div data-role="dialog" id="form_error" data-url="form_error" data-title="Errors in The Form">
+    <div data-role="header">
+        <h1>Form Error</h1>
+    </div>
+    <div data-role="content">
+    	<p>Please Correct the following errors before submitting the form:</p>
+	    <ul></ul>
+    </div>
+</div>
+<div data-role="dialog" id="add_success">
+	<div data-role="header">
+		<h1>LocalStorage Updated</h1>
+	</div>
+	<div data-role="content">
+		<p>Your Item was successfully added!</p>
+	</div>
+</div>
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" src="http://dev.jtsage.com/cdn/simpledialog/latest/jquery.mobile.simpledialog2.min.js"></script>

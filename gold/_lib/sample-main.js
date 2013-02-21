@@ -15,10 +15,30 @@ $('#home').on('pageinit', function(){
 });
 
 $('#additem').on('pageinit', function(){
-
+	//Bind a Reset Button 
+	$('#reset_form').on('click', function(e) {
+		resetForm();
+	});
+	
+	populateDate();
+	
     var myForm = $('#frm_addItem');
+    var errorLink = $('#error_trigger');
+    
+    
     myForm.validate({
-        invalidHandler: function(form, validator) {
+    	ignore: ".ignore",
+        invalidHandler: function(form, validator) { console.log(validator.submitted);
+        	errorLink.click();
+        	var output ='';
+        	for (var key in validator.submitted) {
+	        	var label = $('label[for^="' + key + '"]');
+	        	
+	        	var cleanedLabel = label.text().replace(/[*:]/g, '');
+	        	output += '<li>' + cleanedLabel + '</li>';
+        	}
+        	
+        	$('#form_error').find('ul').html(output);
         },
         submitHandler: function() {
             var data = myForm.serializeArray();
@@ -46,7 +66,31 @@ var getData = function(){
 };
 
 var storeData = function(data){
+	var cleanedObj = {};
+	var editValue = localStorage.getItem('edit');
+	var newString;
+	var stringObj;
 
+	cleanedObj.playlist_id =  editValue === null ? getRandomPlaylistId() : editValue; 
+	
+	for (var i = 0; i < data.length; i++) {
+		var name = data[i].name;
+		var value = data[i].value;
+		
+		cleanedObj[name] = value;
+	}
+	 
+	appendCurrentInventory(cleanedObj);
+
+};
+
+var appendCurrentInventory = function(newObject) {
+	var currentInventory = $.parseJSON(localStorage.getItem('playlists'));
+	
+	currentInventory.push(newObject);
+	localStorage.setItem('playlists', JSON.stringify(currentInventory));
+	$('#success_trigger').click();
+	resetForm();
 };
 
 var	deleteItem = function (){
@@ -54,8 +98,36 @@ var	deleteItem = function (){
 };
 
 var clearLocal = function(){
-
+	localStorage.clear();
 };
+
+//Custom Form because default reset doesnt not honor default values
+var resetForm = function() {
+	document.getElementById('frm_addItem').reset();
+	populateDate();
+	$('#playlist_genre').find('option:first-child').attr('selected', true).end().selectmenu('refresh');
+	$('#playlist_priority').slider('refresh');	
+}
+
+var populateDate = function() {
+	if (localStorage.getItem('addEdit') !== 'edit') {
+		var now = new Date();
+		var month = now.getMonth() + 1;
+		var day = now.getDate();
+		
+		if (month < 10) {
+			month = "0" + month;
+		}
+		
+		if (day < 10) {
+			day = "0" + day;
+		}
+		
+		var today = now.getFullYear() + '-' + month + '-' + day;
+		
+		$('#playlist_date').val(today);
+	}
+}
 
 var bindBrowseButtons = function() {
    $('#list_browse').find('li').find('a').on('click', function(e){
@@ -92,7 +164,6 @@ var displaySelectedData = function() {
     var playlistsRaw = localStorage.getItem('playlists');
     var playlistsClean = $.parseJSON(playlistsRaw);
 
-    console.log(criteria);
 
     for (var i= 0; i < playlistsClean.length; i++) {
         var tmpItem = playlistsClean[i];
