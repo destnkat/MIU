@@ -1,4 +1,4 @@
-{ "playlists" : [
+var json = { "playlists" : [
         {
             "playlist_name" : "Certified Country",
             "playlist_genre" : "country",
