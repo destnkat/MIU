@@ -126,19 +126,6 @@ function retrieveData() {
         var consolidated = JSON.stringify(json.playlists[i]);
         localStorage.setItem(playlistID, consolidated);
     }
-    /**
-     * THis was the root of my problem.  Trying to AJAX this
-     *
-      $.ajax({
-        url: '_js/json.json',
-        success: function(data) {
-            for(var i = 0; i < data.playlists.length; i++) {
-                var playlistID = getRandomPlaylistId();
-                var consolidated = JSON.stringify(data.playlists[i]);
-                localStorage.setItem(playlistID, consolidated);
-            }
-        }
-    });*/
 }
 
 function deleteAllData(e) {
