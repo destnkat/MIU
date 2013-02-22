@@ -145,7 +145,7 @@ var appendCurrentInventory = function(newObject) {
 
         modalHeader = "Playlist Edited";
         modalContent = "<p>Your Playlist has been successfully edited</p>";
-        
+
 		for (var i = 0; i < currentInventory.length; i++) {
 			if (currentInventory[i].playlist_id == newObject.playlist_id) {
 			

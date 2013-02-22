@@ -12,6 +12,10 @@ $('#home').on('pageinit', function(){
     bindButtons();
 });
 
+$('#additem').on('pageinit', function() {
+   bindButtons();
+});
+
 
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
@@ -22,11 +26,31 @@ function getRandomPlaylistId() {
  * @param e
  */
 function handleFormSubmit(e){
-    e.preventDefault();
+     console.log('test');
 
     var obj = {};
     var randomId = $('#add_edit').val() === 'edit' ? $('#add_edit').data('key') : getRandomPlaylistId();
     var itemsArray = ['playlist_name', 'playlist_description', 'playlist_genre', 'playlist_date', 'playlist_priority'];
+
+    if ($('#playlist_name').val() == '') {
+        $('<div>').simpledialog2({
+            mode: 'button',
+            width: 280,
+            headerText: 'ERROR',
+            headerClose: false,
+            buttonPrompt: 'YOu have an error in your form submission.  Try Again',
+            buttons: {
+                'OK' : {
+                    click: function(){
+                        $('#buttonoutput').text('OK');
+                    },
+                    theme: "a"
+                }
+            }
+        });
+
+        return;
+    }
 
     for(var i= 0 ; i < itemsArray.length; i++) {
         obj[itemsArray[i]] = $('#' + itemsArray[i]).val();
@@ -147,7 +171,7 @@ function deleteAllData(e) {
     });
 }
 function bindButtons() {
-    $('#btn_submitPlaylist').live('click', handleFormSubmit);
+    $('#btn_submitPlaylist').on('click', handleFormSubmit);
     $('#btn_deleteAll').live('click', deleteAllData);
     $('.btn_edit').live('click', function(e){
         var key = $(this).data('key');

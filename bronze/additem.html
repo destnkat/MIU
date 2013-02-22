@@ -38,7 +38,7 @@
             </span>
                     Name of Playlist:
                 </label>
-                <input type="text" name="playlist_name" id="playlist_name" />
+                <input type="text" placeholder="Enter Name" name="playlist_name" id="playlist_name" required />
             </div>
             <div data-role="fieldcontain">
                 <label for="playlist_description" id="lbl_description">
@@ -47,7 +47,7 @@
             </span>
                     Description:
                 </label>
-                <textarea name="playlist_description" id="playlist_description">
+                <textarea name="playlist_description" id="playlist_description" placeholder="Description" >
                 </textarea>
             </div>
             <div data-role="fieldcontain">
@@ -58,9 +58,6 @@
                     Primary Genre:
                 </label>
                 <select name="playlist_genre" id="playlist_genre">
-                    <option value="null">
-                        Please Choose one:
-                    </option>
                     <option value="country">
                         Country
                     </option>
