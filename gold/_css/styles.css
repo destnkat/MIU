@@ -142,16 +142,26 @@ label.hasError {
 }
 
 #reset_form_dummy,
-#success_trigger,
+#confirmation_trigger,
 #error_trigger {
 	display: none;
 }
 
 label.error {
 	display: block;
-	font-size: 11px;
+	font-size: 12px;
 	color: red;
 }
 div.ui-slider-switch {
 	width: 100%;
+}
+
+#btn_submitPlaylist {
+    float: right;
+    width: 60%;
+    margin-left: 5%;
+}
+
+#reset_form {
+    width: 30%;
 }

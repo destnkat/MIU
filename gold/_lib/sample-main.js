@@ -1,7 +1,7 @@
 $('#home').on('pageinit', function(){
-    retrieveData();
+    getData();
     bindBrowseButtons();
-    checkAndRemoveEdit();
+
     $('#search-basic').keyup(function(evt){
         runSearchFunction();
     });
@@ -15,7 +15,19 @@ $('#home').on('pageinit', function(){
     });
 });
 
-$('#additem').on('pageinit', function(){
+$('#info').on('pageshow', function(){
+   checkAndRemoveEdit();
+});
+
+$('#home').on('pageshow', function(){
+    checkAndRemoveEdit();
+});
+
+$('#browse').on('pageshow', function(){
+    checkAndRemoveEdit();
+});
+
+$('#additem').on('pageshow', function(){
 	//Bind a Reset Button 
 	$('#reset_form').on('click', function(e) {
 		resetForm();
@@ -24,34 +36,20 @@ $('#additem').on('pageinit', function(){
 	if (localStorage.getItem('edit') != null) {
 		autofillData();
 	} else {
+        resetForm();
 		populateDate();
 	}
     var myForm = $('#frm_addItem');
-    var errorLink = $('#error_trigger');
-    
     
     myForm.validate({
     	ignore: ".ignore",
-        invalidHandler: function(form, validator) { console.log(validator.submitted);
-        	/*errorLink.click();
-        	var output ='';
-        	for (var key in validator.submitted) {
-	        	var label = $('label[for^="' + key + '"]');
-	        	
-	        	var cleanedLabel = label.text().replace(/[*:]/g, '');
-	        	output += '<li>' + cleanedLabel + '</li>';
-        	}
-        	
-        	$('#form_error').find('ul').html(output);*/
+        invalidHandler: function(form, validator) {
         },
         submitHandler: function() {
             var data = myForm.serializeArray();
             storeData(data);
         }
     });
-
-    //any other code needed for addItem page goes here
-
 });
 
 $('#browse').on('pageshow', function(){
@@ -82,22 +80,28 @@ var autofillData = function (){
 };
 
 var setSelectValue = function(whichSelect, value) {
-
-	var curSelection = $('#' + whichSelect).find('option[value="' + value + '"]');
+    var $select = $('#' + whichSelect);
+	var curSelection = $select.find('option[value="' + value + '"]');
 	curSelection.attr('selected', true);
-	$('#' + whichSelect).selectmenu('refresh');
+	$select.selectmenu('refresh');
 		
 };
 
 var getData = function(){
+    if (localStorage.getItem('playlists') !== null ) {
+        return;
+    }
 
+    for(var i = 0; i < json.playlists.length; i++) {
+        json.playlists[i].playlist_id = getRandomPlaylistId();
+    }
+
+    localStorage.setItem('playlists', JSON.stringify(json.playlists));
 };
 
 var storeData = function(data){
 	var cleanedObj = {};
 	var editValue = localStorage.getItem('edit');
-	var newString;
-	var stringObj;
 
 	cleanedObj.playlist_id =  editValue === null ? getRandomPlaylistId() : editValue; 
 	
@@ -122,13 +126,26 @@ var bindControlButtons = function() {
 	$('.btn_delete').on('click', function(e) {
 	    deleteItem($(this).data('key'));
 	});
+
+    $('#btn_deleteAll').on('click', clearLocal);
 };
 
 var appendCurrentInventory = function(newObject) {
 	
 	var currentInventory = $.parseJSON(localStorage.getItem('playlists'));
+    var $modal = $('#confirmation_modal');
+    var $trigger = $('#confirmation_trigger');
+    var modalHeader = 'New Item Stored';
+    var modalContent = "<p>Your New Playlist has been successfully added to localStorage! Wahooooo!</p>";
+
+    $modal.find('.modalHeader').text('Local Storage Deleted');
+    $modal.find('.modalContent').html('<p>Your I</p>');
 	
 	if (localStorage.getItem('edit') != null) {
+
+        modalHeader = "Playlist Edited";
+        modalContent = "<p>Your Playlist has been successfully edited</p>";
+        
 		for (var i = 0; i < currentInventory.length; i++) {
 			if (currentInventory[i].playlist_id == newObject.playlist_id) {
 			
@@ -147,7 +164,10 @@ var appendCurrentInventory = function(newObject) {
 	}
 	
 	localStorage.setItem('playlists', JSON.stringify(currentInventory));
-	$('#success_trigger').click();
+
+	$trigger.click();
+    $modal.find('.modalHeader').text(modalHeader);
+    $modal.find('.modalContent').html(modalContent);
 	resetForm();
 };
 
@@ -165,8 +185,17 @@ var	deleteItem = function (key){
 	$('#success_trigger').click();
 };
 
-var clearLocal = function(){
+var clearLocal = function(e){
+    var $modal = $('#confirmation_modal');
+    var $trigger = $('#confirmation_trigger');
+
+    $modal.find('.modalHeader').text('Local Storage Deleted');
+    $modal.find('.modalContent').html('<p>Your Local Storage has been successfully cleared</p>');
+
 	localStorage.clear();
+
+    $trigger.click();
+    $('#browse').page('destroy').page();
 };
 
 //Custom Form because default reset doesnt not honor default values
@@ -199,22 +228,14 @@ var bindBrowseButtons = function() {
    $('#list_browse').find('li').find('a').on('click', function(e){
         localStorage.setItem('criteria', $(this).data('criteria'));
     });
+
+    $('.btn_browse').on('click', function(e){
+        localStorage.setItem('criteria', $(this).data('criteria'));
+    });
 }
 
 var getRandomPlaylistId = function() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
-}
-
-var retrieveData = function(){
-    if (localStorage.getItem('playlists') !== null ) {
-        return;
-    }
-
-    for(var i = 0; i < json.playlists.length; i++) {
-        json.playlists[i].playlist_id = getRandomPlaylistId();
-    }
-
-    localStorage.setItem('playlists', JSON.stringify(json.playlists));
 };
 
 var sortArray = function(a, b) {
@@ -228,8 +249,11 @@ var displaySelectedData = function() {
     var arr = [];
     var criteria = localStorage.getItem('criteria');
     var playlistsRaw = localStorage.getItem('playlists');
-    var playlistsClean = $.parseJSON(playlistsRaw);
+    var playlistsClean = [];
 
+    if (playlistsRaw != null) {
+         playlistsClean = $.parseJSON(playlistsRaw);
+    }
 
     for (var i= 0; i < playlistsClean.length; i++) {
         var tmpItem = playlistsClean[i];
