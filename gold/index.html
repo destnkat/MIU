@@ -23,9 +23,7 @@
 <body>
 <div data-role="page" id="home" data-url="home" data-title="Home" data-theme="a" data-content-theme="a">
     <div data-role="header">
-        <h1>
-            Digital Jukebox
-        </h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div id="feature_background">
         <a href="#additem" class="btn_addPlaylist" data-role="button" data-icon="plus" data-iconpos="right" data-transition="slidefade">
@@ -36,7 +34,7 @@
         <div data-role="fieldcontain" id="search_container">
             <input type="search" name="search" id="search-basic" placeholder="Find Playlists..."/>
         </div>
-        <ul data-role="listview" id="list_browse" data-theme="c" data-divider-theme="a">
+        <ul data-role="listview" id="list_browse" data-theme="b" data-divider-theme="a">
             <li data-role="list-divider">
                 Browse By:
             </li>
@@ -83,7 +81,8 @@
 </div>
 <div data-role="page" id="info" data-url="about" data-title="About This Application">
     <div data-role="header">
-        <h1>About This Application</h1>
+        <h1>About</h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div data-role="content">
         <p>
@@ -111,9 +110,8 @@
 </div>
 <div data-role="page" id="additem" data-title="Add Playlist">
     <div data-role="header">
-        <h1>
-            Add Playlists
-        </h1>
+        <h1>Add Playlist</h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div data-role="content">
         <div id="error_confirmation">
@@ -196,7 +194,7 @@
             </p>
             <div data-role="fieldcontain">
                 <ul data-role="listview">
-            	    <li><input type="submit" value="Submit Playlist" data-theme="b" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist"></li>
+            	    <li><input type="submit" value="Submit Playlist" data-theme="a" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist"></li>
             	    <li><input type="button" value="Reset Playlist" data-theme="c" data-icon="refresh" data-iconpos="right" data-mini="true" id="reset_form"/></li>
                 </ul>
             </div>
@@ -216,14 +214,15 @@
 </div>
 <div data-role="page" id="browse" data-title="Browse Playlists">
     <div data-role="header">
-        <h1>Browse Playlists</h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
+        <h1>Browse</h1>
     </div>
     <div data-role="content">
-    	<div data-role="fieldcontain">
-			<a id="btn_displayAll" class="btn_browse" data-theme="b"  href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">Display All</a>
-    	</div>
         <div id="browse_results"></div>
-        <input type="button" value="Delete All" data-icon="delete" data-mini="true" data-iconpos="right" id="btn_deleteAll" />
+        <div data-role="fieldcontain">
+            <a id="btn_displayAll" class="btn_browse" data-theme="a"  href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">Display All</a>
+            <input type="button" value="Delete All" data-icon="delete" data-mini="true" data-iconpos="right" id="btn_deleteAll" />
+        </div>
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
         <div data-role="navbar" data-iconpos="top">

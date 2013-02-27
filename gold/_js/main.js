@@ -89,7 +89,7 @@ function displayData(arr) {
     for(var i = 0; i < arr.length; i++) {
         var tmpItem = arr[i];
         var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
-         output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='a'>";
+         output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='b'>";
          output += "<h3><img src='_images/thumb_" + tmpItem.playlist_genre + ".png' width='30' alt=''/></strong> " + tmpItem.playlist_name +  "</h3>";
          output += "<ul data-role='listview'><li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
          output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";

@@ -15,6 +15,13 @@ $('#home').on('pageinit', function(){
     });
 });
 
+$('#search').on('pageshow', function(event) {
+    var playlist = window.location.href.split("?")[1];
+    var pId = playlist.replace("playlist_id=", "");
+    populateSearchResultDetails(pId);
+    $(this).page("destroy").page();
+});
+
 $('#info').on('pageshow', function(){
    checkAndRemoveEdit();
 });
@@ -275,13 +282,16 @@ var displaySelectedData = function() {
 };
 
 var displayData = function(arr) {
-    var output = "<div data-role='collapsible-set'>";
+    //var output = "<div data-role='collapsible-set'>";
+    var output = "<ul data-role='listview' data-inset='false' data-theme='b'>";
     var count = 0;
 
     for(var i = 0; i < arr.length; i++) { 
         var tmpItem = arr[i];
+
         var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
-        output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='a'>";
+        /*
+        output += "<div class='display_item' data-role='collapsible' data-icon='' data-iconpos='right' data-theme='b'>";
         output += "<h3><img src='_images/thumb_" + tmpItem.playlist_genre + ".png' width='30' alt=''/></strong> " + tmpItem.playlist_name +  "</h3>";
         output += "<ul data-role='listview'><li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
         output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";
@@ -291,10 +301,16 @@ var displayData = function(arr) {
         output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-mini='true' data-key='" + tmpItem.playlist_id + "' />";
         output += "<input type='button' value='Delete Playlist' class='btn_delete' data-mini='true' data-key='" + tmpItem.playlist_id + "'/></li></ul>";
         output += '</div>';
+        */
 
+        output += "<li><a href='search.html?playlist_id=" + tmpItem.playlist_id + "' data-ajax='false'>";
+        output += "<img src='_images/thumb_" + tmpItem.playlist_genre + ".png' alt=''/>";
+        output += "<h3>" + tmpItem.playlist_name + "</h3>";
+        output += "<p><strong>Priority:</strong> " + tmpItem.playlist_priority + "&nbsp; <strong>Enabled:</strong> " + enabled + "</p>";
+        output += "</a></li>";
         count++;
     }
-    output += "</div>";
+    output += "</ul>";
     if (count === 0 ) {
         output = "<p>Currently No Items in this category</p>"
     }
@@ -307,3 +323,30 @@ var checkAndRemoveEdit = function() {
 		localStorage.removeItem('edit');
 	}	
 };
+
+var populateSearchResultDetails = function(id) {
+    var storage = $.parseJSON(localStorage.getItem('playlists'));
+    var tmpItem = {};
+
+    for(var i= 0; i < storage.length; i++) {
+        if ( storage[i].playlist_id == id) {
+            tmpItem = storage[i];
+            break;
+        }
+    }
+    var enabled = tmpItem.enabled == "1" ? "Active" : "Inactive";
+    var output = "<ul data-role='listview' data-inset='false' data-theme='b'><li>";
+
+    output += "<li data-role='list-divider'>" + tmpItem.playlist_name + "</li>";
+    output += "<li><strong>Description: </strong>" + tmpItem.playlist_description + "</li>";
+    output += "<li><strong>Genre:</strong> " + tmpItem.playlist_genre + "</li>";
+    output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
+    output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
+    output += "<li><strong>Status:</strong> " + enabled + "</li>";
+    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-theme='a' data-key='" + id + "'/>";
+    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + id + "'/>";
+    output += '</li>';
+
+    $('#results_detail').html(output);
+
+}
