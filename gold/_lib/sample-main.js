@@ -20,6 +20,7 @@ $('#search').on('pageshow', function(event) {
     var pId = playlist.replace("playlist_id=", "");
     populateSearchResultDetails(pId);
     $(this).page("destroy").page();
+    bindControlButtons();
 });
 
 $('#info').on('pageshow', function(){
@@ -127,7 +128,7 @@ var bindControlButtons = function() {
 
 	$('.btn_edit').on('click', function(e) {
 		localStorage.setItem('edit', $(this).data('key'));
-		$.mobile.changePage('#additem');
+		window.location = "index.html#additem"
 	});
 	
 	$('.btn_delete').on('click', function(e) {
@@ -189,7 +190,15 @@ var	deleteItem = function (key){
 	}
 		
 	localStorage.setItem('playlists', JSON.stringify(currentInventory));
-	$('#success_trigger').click();
+
+    var $modal = $('#confirmation_modal');
+    var $trigger = $('#confirmation_trigger');
+
+    $modal.find('.modalHeader').text('Local Storage Deleted');
+    $modal.find('.modalContent').html('<p>Your Local Storage has been successfully cleared</p>');
+
+	$trigger.click();
+    window.location = "index.html";
 };
 
 var clearLocal = function(e){
