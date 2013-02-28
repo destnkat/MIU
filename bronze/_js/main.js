@@ -5,13 +5,13 @@
  * @description - Using JQM to convert VFW Web App into a Mobile Version.  Using Multi-Page Templating
  */
 
-$('#home').on('pageinit', function(){
-    if (localStorage.length < 1) {
+$(function(){
+    if(localStorage.length < 1) {
         retrieveData();
     }
-    bindButtons();
-});
 
+    bindButtons();
+})
 
 function getRandomPlaylistId() {
     return Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
@@ -72,8 +72,8 @@ function displaySelectedData(criteria) {
             (criteria === 'high_priority' && tmpItem.playlist_priority > 75) ||
             (criteria === 'all')
             ) {
-                tmpItem.key = key;
-                arr.push(tmpItem);
+            tmpItem.key = key;
+            arr.push(tmpItem);
         }
     }
 
@@ -88,14 +88,14 @@ function displayData(arr) {
     for(var i = 0; i < arr.length; i++) {
         var tmpItem = arr[i];
 
-         output += "<li>";
-         output += "<a href='search.html?playlistid=" + tmpItem.key + "'>";
-         output += "<img src='_images/thumb_" + tmpItem.playlist_genre + ".png' alt=''/>";
-         output += "<h3>" + tmpItem.playlist_name +  "</h3>";
-         output += "<p>" + tmpItem.playlist_genre + "</p>";
-         output += '</a></li>';
+        output += "<li>";
+        output += "<a href='search.html?playlistid=" + tmpItem.key + "'>";
+        output += "<img src='_images/thumb_" + tmpItem.playlist_genre + ".png' alt=''/>";
+        output += "<h3>" + tmpItem.playlist_name +  "</h3>";
+        output += "<p>" + tmpItem.playlist_genre + "</p>";
+        output += '</a></li>';
 
-         count++;
+        count++;
     }
     output += "</div>";
     if (count === 0 ) {
@@ -115,17 +115,13 @@ function sortArray(a, b) {
 function retrieveData() {
     var storageObj = {};
     storageObj.playlists = [];
+    var data = json;
 
-    $.ajax({
-        url: '_js/json.json',
-        success: function(data) {
-            for(var i = 0; i < data.playlists.length; i++) {
-                var playlistID = getRandomPlaylistId();
-                var consolidated = JSON.stringify(data.playlists[i]);
-                localStorage.setItem(playlistID, consolidated);
-            }
-        }
-    });
+    for(var i = 0; i < data.playlists.length; i++) {
+        var playlistID = getRandomPlaylistId();
+        var consolidated = JSON.stringify(data.playlists[i]);
+        localStorage.setItem(playlistID, consolidated);
+    }
 }
 
 function deleteAllData(e) {
@@ -180,7 +176,7 @@ function populateSearchDiv(results) {
 
     $.each(results, function(key) {
         $('<li>', {
-           html: '<a href="search.html?playlistid=' + results[key].id + '">' + results[key].playlist_name + '</a>'
+            html: '<a href="search.html?playlistid=' + results[key].id + '">' + results[key].playlist_name + '</a>'
         }).appendTo(resultsContainer);
     });
 
@@ -203,22 +199,22 @@ function runSearchFunction() {
     }
 
     $.each(localStorage, function(i){
-       var curKey = localStorage.key(i);
-       var item = localStorage.getItem(curKey);
+        var curKey = localStorage.key(i);
+        var item = localStorage.getItem(curKey);
 
-       var parsedItem = $.parseJSON(item);
-       var loweredName = parsedItem.playlist_name.toLowerCase();
-       var loweredDescription = parsedItem.playlist_description.toLowerCase();
+        var parsedItem = $.parseJSON(item);
+        var loweredName = parsedItem.playlist_name.toLowerCase();
+        var loweredDescription = parsedItem.playlist_description.toLowerCase();
 
         parsedItem.id = curKey;
 
-       if (loweredName.indexOf(curSearchValue) !== -1 || loweredDescription.indexOf(curSearchValue) !== -1 ) {
-           resultsList.push(parsedItem);
-       }
+        if (loweredName.indexOf(curSearchValue) !== -1 || loweredDescription.indexOf(curSearchValue) !== -1 ) {
+            resultsList.push(parsedItem);
+        }
 
     });
 
-   populateSearchDiv(resultsList);
+    populateSearchDiv(resultsList);
 }
 
 
@@ -233,8 +229,8 @@ function populateSearchResultDetails(id) {
     output += "<li><strong>Created</strong>: " + tmpItem.playlist_date + "</li>";
     output += "<li><strong>Priority:</strong> " + tmpItem.playlist_priority + "</li>";
     output += "<li><strong>Status:</strong> " + enabled + "</li>";
-    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + tmpItem.key + "'/>";
-    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + tmpItem.key + "'/></li></ul>";
+    output += "<li><input type='button' value='Edit Playlist' class='btn_edit' data-key='" + id+ "'/>";
+    output += "<input type='button' value='Delete Playlist' class='btn_delete' data-key='" + id + "'/></li></ul>";
     output += '</div></div>';
 
     $('#results_detail').html(output);
@@ -266,7 +262,7 @@ function prepopulateEditForm(id) {
 
 $('#home').live('pageshow', function (event) {
     $('#search-basic').keyup(function(evt){
-       runSearchFunction();
+        runSearchFunction();
     });
 
     $('.ui-input-search').find('.ui-icon-delete').click(function(evt){
@@ -298,8 +294,8 @@ $('#additem').live('pageshow', function (event) {
 });
 
 $('#search').live('pageshow', function(event) {
-   var playlist = $(this).data('url').split("?")[1];
-   var pId = playlist.replace("playlistid=", "");
-   populateSearchResultDetails(pId);
-   $(this).page("destroy").page();
+    var playlist = $(this).data('url').split("?")[1];
+    var pId = playlist.replace("playlistid=", "");
+    populateSearchResultDetails(pId);
+    $(this).page("destroy").page();
 });

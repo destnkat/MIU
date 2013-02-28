@@ -23,9 +23,7 @@
 <body>
 <div data-role="page" id="home" data-url="home" data-title="Home" data-theme="a" data-content-theme="a">
     <div data-role="header">
-        <h1>
-            Digital Jukebox
-        </h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div id="feature_background">
         <a href="#additem" class="btn_addPlaylist" data-role="button" data-icon="plus" data-iconpos="right" data-transition="slidefade">
@@ -36,7 +34,7 @@
         <div data-role="fieldcontain" id="search_container">
             <input type="search" name="search" id="search-basic" placeholder="Find Playlists..."/>
         </div>
-        <ul data-role="listview" id="list_browse" data-theme="c" data-divider-theme="a">
+        <ul data-role="listview" id="list_browse" data-theme="b" data-divider-theme="a">
             <li data-role="list-divider">
                 Browse By:
             </li>
@@ -75,7 +73,7 @@
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade" class="ui-btn-active ui-state-persist">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#browse" class="btn_browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
@@ -83,7 +81,8 @@
 </div>
 <div data-role="page" id="info" data-url="about" data-title="About This Application">
     <div data-role="header">
-        <h1>About This Application</h1>
+        <h1>About</h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div data-role="content">
         <p>
@@ -103,7 +102,7 @@
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info" class="ui-btn-active ui-state-persist">Info</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#browse" class="btn_browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
@@ -111,9 +110,8 @@
 </div>
 <div data-role="page" id="additem" data-title="Add Playlist">
     <div data-role="header">
-        <h1>
-            Add Playlists
-        </h1>
+        <h1>Add Playlist</h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
     </div>
     <div data-role="content">
         <div id="error_confirmation">
@@ -163,28 +161,26 @@
                     </option>
                 </select>
             </div>
+            
             <div data-role="fieldcontain">
                 <label for="playlist_date">
                     Date Added:
                 </label>
                 <input type="date" name="playlist_date" id="playlist_date" />
             </div>
+            
             <div data-role="fieldcontain">
-                <label for="playlist_priority">
-                    Priority:
-                </label>
-                <input type="range" name="playlist_priority" id="playlist_priority" value="50" min="0" max="100"/>
+                <label for="playlist_priority">Priority:</label>
+                <input type="range" name="playlist_priority" id="playlist_priority" value="50" min="1" max="100" class="ignore" />
+               
             </div>
+            
             <div data-role="fieldcontain">
-                <label for="playlist_enabled">
-                    Active
-                </label>
-                <input type="radio" name="playlist_enabled" id="playlist_enabled" checked value="1" class="required" />
-
-                <label for="playlist_disabled">
-                    Disabled
-                </label>
-                <input type="radio" name="playlist_enabled" id="playlist_disabled" value="0" />
+                <label for="playlist_enabled">Activate Playlist</label>
+                <select data-role="slider" name="playlist_enabled" id="playlist_enabled">
+                	<option value="0">Disabled</option>
+                	<option value="1">Enabled</option>
+                </select>
             </div>
 
 
@@ -196,16 +192,13 @@
                     denotes a required field
                 </small>
             </p>
-            <input type="submit" value="Submit Playlist" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist">
-
-            <a id="btn_displayAll" href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">
-                Display All
-            </a>
-            <a href="#home" data-role="button" data-icon="home" data-iconpos="right" data-transition="fade">
-                Home
-            </a>
-            <input type="button" value="Delete All" data-icon="delete" data-iconpos="right" id="btn_deleteAll" />
-            <input type="hidden" name="add_edit" id="add_edit" value="add" />
+            <div data-role="fieldcontain">
+                <ul data-role="listview">
+            	    <li><input type="submit" value="Submit Playlist" data-theme="a" data-icon="plus" data-iconpos="right" id="btn_submitPlaylist"></li>
+            	    <li><input type="button" value="Reset Playlist" data-theme="c" data-icon="refresh" data-iconpos="right" data-mini="true" id="reset_form"/></li>
+                </ul>
+            </div>
+            <a href="#confirmation_modal" id="confirmation_trigger" data-rel="dialog" data-transition="pop">Success Modal</a>
         </form>
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
@@ -213,7 +206,7 @@
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
+                <li><a href="#browse" class="btn_browse" data-transition="slidefade" data-criteria="all" data-icon="star">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus" class="ui-btn-active ui-state-persist">Add Playlist</a></li>
             </ul>
         </div>
@@ -221,25 +214,34 @@
 </div>
 <div data-role="page" id="browse" data-title="Browse Playlists">
     <div data-role="header">
-        <h1>
-            Browse Playlists
-        </h1>
+        <a href="#home" data-role="none"><img src="_images/main_logo.png" alt="" class="main_logo"/></a>
+        <h1>Browse</h1>
     </div>
-    <div data-role="content" id="browse_results">
-
+    <div data-role="content">
+        <div id="browse_results"></div>
+        <div data-role="fieldcontain">
+            <a id="btn_displayAll" class="btn_browse" data-theme="a"  href="#browse" data-criteria="all" data-role="button" data-criteria="all" data-icon="star" data-iconpos="right">Display All</a>
+            <input type="button" value="Delete All" data-icon="delete" data-mini="true" data-iconpos="right" id="btn_deleteAll" />
+        </div>
     </div>
     <div data-role="footer" data-position="fixed" data-id="bottom-nav">
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li><a href="#home" data-icon="home" data-transition="slidefade">Home</a></li>
                 <li><a href="#info" data-transition="slidefade" data-icon="info">Info</a></li>
-                <li><a href="#browse" data-transition="slidefade" data-criteria="all" data-icon="star" class="ui-btn-active ui-state-persist">Playlists</a></li>
+                <li><a href="#browse" class="btn_browse" data-transition="slidefade" data-criteria="all" data-icon="star" class="ui-btn-active ui-state-persist">Playlists</a></li>
                 <li><a href="#additem" data-transition="slidefade" data-icon="plus">Add Playlist</a></li>
             </ul>
         </div>
     </div>
 </div>
-
+<div data-role="dialog" id="confirmation_modal">
+	<div data-role="header">
+		<h1 class='modalHeader'></h1>
+	</div>
+	<div data-role="content" class="modalContent">
+	</div>
+</div>
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" src="http://dev.jtsage.com/cdn/simpledialog/latest/jquery.mobile.simpledialog2.min.js"></script>
